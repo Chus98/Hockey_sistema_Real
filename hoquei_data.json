@@ -1,5 +1,184 @@
-{
-  "ultima_actualizacion": "Esperant sincronització...",
-  "clasificacion": [],
-  "equipos": []
-}
+[
+    {
+        "n": "CP Sant Cugat",
+        "reg": "CAT",
+        "ok": true,
+        "cats": [
+            "OK Lliga",
+            "Lliga Plata",
+            "Base"
+        ]
+    },
+    {
+        "n": "CH Caldes Recam Làser",
+        "reg": "CAT",
+        "ok": true,
+        "cats": [
+            "OK Lliga",
+            "Junior"
+        ]
+    },
+    {
+        "n": "CP Vic",
+        "reg": "CAT",
+        "ok": true,
+        "cats": [
+            "OK Lliga Plata",
+            "Junior",
+            "Juvenil"
+        ]
+    },
+    {
+        "n": "CP Manlleu",
+        "reg": "CAT",
+        "ok": true,
+        "cats": [
+            "OK Lliga Femenina",
+            "Lliga Plata"
+        ]
+    },
+    {
+        "n": "Igualada Rigat HC",
+        "reg": "CAT",
+        "ok": true,
+        "cats": [
+            "OK Lliga",
+            "1ª Catalana"
+        ]
+    },
+    {
+        "n": "CE Noia Freixenet",
+        "reg": "CAT",
+        "ok": true,
+        "cats": [
+            "OK Lliga",
+            "Base"
+        ]
+    },
+    {
+        "n": "CP Calafell",
+        "reg": "CAT",
+        "ok": true,
+        "cats": [
+            "OK Lliga",
+            "Base"
+        ]
+    },
+    {
+        "n": "CP Cambrils",
+        "reg": "CAT",
+        "ok": false,
+        "cats": [
+            "2ª Catalana",
+            "Sènior Femení"
+        ]
+    },
+    {
+        "n": "CH Riudoms",
+        "reg": "CAT",
+        "ok": false,
+        "cats": [
+            "2ª Catalana",
+            "Infantil"
+        ]
+    },
+    {
+        "n": "Vila-seca CH",
+        "reg": "CAT",
+        "ok": false,
+        "cats": [
+            "2ª Catalana",
+            "Juvenil"
+        ]
+    },
+    {
+        "n": "CH Olimpic Reus",
+        "reg": "CAT",
+        "ok": false,
+        "cats": [
+            "2ª Catalana",
+            "3ª Catalana"
+        ]
+    },
+    {
+        "n": "CH Mataró",
+        "reg": "CAT",
+        "ok": true,
+        "cats": [
+            "OK Lliga",
+            "Base"
+        ]
+    },
+    {
+        "n": "CP Vilafranca",
+        "reg": "CAT",
+        "ok": true,
+        "cats": [
+            "OK Lliga Plata",
+            "Base"
+        ]
+    },
+    {
+        "n": "Deportivo Liceo",
+        "reg": "FSP",
+        "ok": true,
+        "cats": [
+            "OK Lliga",
+            "Base Galega"
+        ]
+    },
+    {
+        "n": "PAS Alcoi",
+        "reg": "ESP",
+        "ok": true,
+        "cats": [
+            "OK Lliga",
+            "Base Valenciana"
+        ]
+    },
+    {
+        "n": "Hockey Rivas",
+        "reg": "ESP",
+        "ok": true,
+        "cats": [
+            "OK Lliga",
+            "Base Madrid"
+        ]
+    },
+    {
+        "n": "CP Alcobendas",
+        "reg": "ESP",
+        "ok": true,
+        "cats": [
+            "OK Lliga Plata",
+            "Base"
+        ]
+    },
+    {
+        "n": "CP Alcorcón",
+        "reg": "ESP",
+        "ok": false,
+        "cats": [
+            "Lliga Madrid",
+            "Base"
+        ]
+    },
+    {
+        "n": "CP Raspeig",
+        "reg": "ESP",
+        "ok": false,
+        "cats": [
+            "Autonòmica Valenciana",
+            "Base"
+        ]
+    },
+    {
+        "n": "Alameda de Osuna",
+        "reg": "ESP",
+        "ok": false,
+        "cats": [
+            "Lliga Madrid",
+            "Base"
+        ]
+    }
+]
