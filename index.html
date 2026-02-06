@@ -1,26 +1,32 @@
 <script>
-let appData = { equipos: [], reglamento_url: "https://fep.es/federacion/reglamentos" };
+// Datos de respaldo por si el archivo JSON falla
+let appData = { 
+    equipos: [], 
+    reglamento_url: "https://fep.es/federacion/reglamentos" 
+};
 
 async function loadData() {
+    const mainContainer = document.getElementById('main-content');
     try {
         const response = await fetch('hoquei_data.json?v=' + Date.now());
+        if (!response.ok) throw new Error("Error red");
         appData = await response.json();
+        renderHome();
     } catch (e) {
-        console.error("No s'han pogut carregar les dades oficials.");
+        console.error("Fallo al cargar JSON:", e);
+        mainContainer.innerHTML = '<div class="widget" style="color:red; text-align:center;">⚠️ Error al conectar con la base de datos oficial.</div>';
     }
-    renderHome();
 }
 
 function renderHome() {
-    // Clasificación real ordenada por los puntos que saca el robot
-    const ranking = [...appData.equipos].sort((a,b) => b.pts - a.pts).slice(0, 5);
+    const ranking = [...(appData.equipos || [])].sort((a,b) => (b.pts || 0) - (a.pts || 0)).slice(0, 5);
     
-    let htmlRank = ranking.map((e, i) => `
+    let htmlRank = ranking.length > 0 ? ranking.map((e, i) => `
         <div class="rank-item" onclick="verCategorias('${e.n}')" style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee; cursor:pointer;">
             <span>${i+1}. ${e.n}</span>
-            <strong style="color:#da291c">${e.pts} PTS</strong>
+            <strong style="color:#da291c">${e.pts || 0} PTS</strong>
         </div>
-    `).join('');
+    `).join('') : '<p style="text-align:center;">Actualitzant dades de la FEP...</p>';
 
     document.getElementById('main-content').innerHTML = `
         <div class="widget" style="background:white; border-radius:20px; padding:20px; margin-bottom:15px; box-shadow:0 10px 15px rgba(0,0,0,0.1);">
@@ -32,7 +38,7 @@ function renderHome() {
         </div>
         <div class="widget" style="background:white; border-radius:20px; padding:20px; margin-bottom:15px; box-shadow:0 10px 15px rgba(0,0,0,0.1);">
             <span style="font-size:10px; color:#94a3b8; font-weight:800;">🏆 CLASIFICACIÓN REAL FEP</span>
-            <div style="margin-top:10px;">${htmlRank || 'Actualitzant...'}</div>
+            <div style="margin-top:10px;">${htmlRank}</div>
         </div>
         <button class="btn-main" onclick="showSection('CAT')" style="background:#da291c; color:white; padding:20px; border:none; border-radius:15px; width:100%; font-weight:800; margin-bottom:10px; cursor:pointer;">CATALUNYA</button>
         <button class="btn-main" onclick="showSection('ESP')" style="background:#003366; color:white; padding:20px; border:none; border-radius:15px; width:100%; font-weight:800; margin-bottom:10px; cursor:pointer;">ESPANYA</button>
@@ -50,8 +56,8 @@ function showSection(reg) {
         </div>
     `).join('');
     document.getElementById('main-content').innerHTML = `
-        <h3 style="font-size:10px; color:#94a3b8; font-weight:800; text-transform:uppercase;">EQUIPS ${reg}</h3>
-        ${htmlList}
+        <h3 style="font-size:10px; color:#94a3b8; font-weight:800; text-transform:uppercase;">EQUIPS ${reg === 'CAT' ? 'DE CATALUNYA' : 'D\'ESPANYA'}</h3>
+        ${htmlList || '<p>No hi ha equips en aquesta secció.</p>'}
         <button onclick="renderHome()" style="background:#64748b; color:white; padding:15px; border:none; border-radius:15px; width:100%; font-weight:800; margin-top:20px; cursor:pointer;">← TORNAR</button>
     `;
 }
@@ -66,9 +72,11 @@ function verCategorias(nombre) {
 async function updateWeather() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (p) => {
-            const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}&current_weather=true`);
-            const data = await res.json();
-            document.getElementById('temp-val').innerText = Math.round(data.current_weather.temperature) + "°C";
+            try {
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}&current_weather=true`);
+                const data = await res.json();
+                document.getElementById('temp-val').innerText = Math.round(data.current_weather.temperature) + "°C";
+            } catch(e) { document.getElementById('temp-val').innerText = "--°C"; }
         });
     }
 }
