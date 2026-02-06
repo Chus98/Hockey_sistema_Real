@@ -1,63 +1,62 @@
 <script>
-// BASE DE DATOS AMPLIADA Y 100% REAL
+// BASE DE DATOS 100% REAL - OK LLIGA MASCULINA 2025/26
 const dadesOficials = {
     reglamento: "https://fep.es/federacion/reglamentos",
     equipos: [
-        // OK LLIGA (Con Distintivo de Copa)
-        {n: "Barça", pts: 42, reg: "CAT", ok: true, cats: ["OK Lliga", "Sènior B", "Júnior", "Juvenil", "Infantil", "Aleví", "Escola"]},
-        {n: "Noia Freixenet", pts: 35, reg: "CAT", ok: true, cats: ["OK Lliga", "Sènior B", "Fem15", "Base"]},
-        {n: "Reus Deportiu Virginias", pts: 33, reg: "CAT", ok: true, cats: ["OK Lliga", "Femení", "Base", "Escola", "Veterans"]},
-        {n: "Voltregà Stern Motor", pts: 28, reg: "CAT", ok: true, cats: ["OK Lliga", "OK Lliga Femenina", "Base", "Sènior B"]},
-        {n: "Parlem Calafell", pts: 27, reg: "CAT", ok: true, cats: ["OK Lliga", "Sènior B", "Base"]},
-        {n: "Igualada Rigat HC", pts: 24, reg: "CAT", ok: true, cats: ["OK Lliga", "Base", "Veterans"]},
-        {n: "Recam Làser CH Caldes", pts: 21, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
-        {n: "Finques Prats Lleida", pts: 18, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
-        {n: "Girona CH", pts: 15, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
-        {n: "Deportivo Liceo", pts: 31, reg: "ESP", ok: true, cats: ["OK Lliga", "Femení", "Base Galega", "Sènior B"]},
-        {n: "PAS Alcoi", pts: 25, reg: "ESP", ok: true, cats: ["OK Lliga", "Base València"]},
+        // Equipos extraídos de la clasificación oficial (Imagen enviada)
+        {n: "HOCKEY CLUB LICEO", pts: 41, reg: "ESP", ok: true, cats: ["OK Lliga", "OK Lliga Femenina", "Base Galega", "Sènior B"]},
+        {n: "BARÇA", pts: 38, reg: "CAT", ok: true, cats: ["OK Lliga", "OK Lliga Plata", "Sènior B", "Júnior", "Juvenil", "Infantil", "Aleví"]},
+        {n: "IGUALADA RIGAT HC", pts: 38, reg: "CAT", ok: true, cats: ["OK Lliga", "Sènior B", "Base", "Veterans"]},
+        {n: "CALAFELL LA MENORQUINA", pts: 33, reg: "CAT", ok: true, cats: ["OK Lliga", "Sènior B", "Base"]},
+        {n: "REUS DEPORTIU BRASILIA", pts: 28, reg: "CAT", ok: true, cats: ["OK Lliga", "Femení", "Base", "Escola"]},
+        {n: "CE NOIA FREIXENET", pts: 25, reg: "CAT", ok: true, cats: ["OK Lliga", "Sènior B", "Base FECAPA"]},
+        {n: "CP VOLTREGA MOVENTO STERN", pts: 22, reg: "CAT", ok: true, cats: ["OK Lliga", "OK Lliga Femenina", "Base"]},
+        {n: "PONS LLEIDA", pts: 18, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
+        {n: "AITEX PAS ALCOI", pts: 18, reg: "ESP", ok: true, cats: ["OK Lliga", "Base FPCV"]},
+        {n: "ADISS HOCKEY RIVAS", pts: 16, reg: "ESP", ok: true, cats: ["OK Lliga", "Base Madrid"]},
+        {n: "CERDANYOLA CLUB D'HOQUEI", pts: 13, reg: "CAT", ok: true, cats: ["OK Lliga", "Femení", "Base"]},
+        {n: "SHUM FRIT RAVICH", pts: 12, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
+        {n: "INNOAESTHETICS HC SANT JUST", pts: 11, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
+        {n: "CH CALDES RECAM LÀSER", pts: 6, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
         
-        // MÁS EQUIPOS DE CATALUNYA Y ESPAÑA (PLATAS Y NACIONALES)
-        {n: "CP Vic", pts: 22, reg: "CAT", ok: false, cats: ["OK Lliga Plata", "Base", "Femení"]},
-        {n: "CP Sant Cugat", pts: 19, reg: "CAT", ok: false, cats: ["OK Lliga Plata", "OK Lliga Femenina", "Base"]},
-        {n: "CP Manlleu", pts: 17, reg: "CAT", ok: false, cats: ["OK Lliga Femenina", "Plata Masculí", "Base"]},
-        {n: "CE Arenys de Munt", pts: 14, reg: "CAT", ok: false, cats: ["OK Lliga Plata", "Base"]},
-        {n: "CH Mataró", pts: 12, reg: "CAT", ok: false, cats: ["OK Lliga Femenina", "Plata Masculí"]},
-        {n: "HC Sant Just", pts: 10, reg: "CAT", ok: false, cats: ["OK Lliga Plata", "Base"]},
-        {n: "HC Raxoi", pts: 8, reg: "ESP", ok: false, cats: ["Femení Galícia", "Base"]},
-        {n: "CHP Bigues i Riells", pts: 5, reg: "CAT", ok: false, cats: ["Femení", "Base"]}
+        // Otros equipos relevantes de Cataluña y España
+        {n: "CP VIC", pts: 0, reg: "CAT", ok: false, cats: ["OK Lliga Plata", "Júnior", "Base"]},
+        {n: "CP SANT CUGAT", pts: 0, reg: "CAT", ok: false, cats: ["OK Lliga Plata", "Femení", "Base"]}
     ]
 };
 
-async function loadRealPoints() {
+// Función para actualizar puntos desde el servidor cada 30 minutos
+async function updateFromServer() {
     try {
-        const res = await fetch('hoquei_data.json?v=' + Date.now());
-        const remote = await res.json();
-        if (remote && remote.equipos) {
-            // Sincronización 100% Real de puntos
-            appData.equipos.forEach(local => {
-                const r = remote.equipos.find(rem => rem.n.toLowerCase().includes(local.n.toLowerCase()));
-                if (r) local.pts = r.pts;
+        const response = await fetch('hoquei_data.json?v=' + Date.now());
+        const data = await response.json();
+        if (data && data.equipos) {
+            data.equipos.forEach(remote => {
+                const local = dadesOficials.equipos.find(e => e.n.toUpperCase() === remote.n.toUpperCase());
+                if (local) local.pts = remote.pts;
             });
         }
-    } catch (e) { console.log("Datos locales activos"); }
+    } catch (e) { console.warn("Sincronització en segon pla..."); }
     showHome();
 }
 
 function showHome() {
-    // Clasificación Real ordenada
-    const ranking = [...dadesOficials.equipos].sort((a,b) => b.pts - a.pts).slice(0, 6);
+    // Clasificación Real ordenada según la imagen de la FEP
+    const ranking = [...dadesOficials.equipos]
+        .filter(e => e.ok) // Solo mostramos OK Lliga en el widget principal
+        .sort((a,b) => b.pts - a.pts)
+        .slice(0, 6);
     
     const rankHtml = ranking.map((e, i) => `
-        <div class="rank-item" onclick="verCats('${e.n}')" style="display:flex; flex-direction:column; padding:12px 0; border-bottom:1px solid #f1f5f9;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-weight:900;">${i+1}. ${e.n}</span>
-                <span style="color:var(--red); font-weight:900;">${e.pts} PTS</span>
+        <div class="rank-item" onclick="verCats('${e.n}')" style="padding: 12px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 800; font-size: 0.9rem;">${i+1}. ${e.n}</span>
+                <span style="color: #da291c; font-weight: 900;">${e.pts} PTS</span>
             </div>
-            ${e.ok ? `
-            <div style="display:flex; align-items:center; margin-top:4px;">
-                <span style="font-size:12px;">🏆</span>
-                <span style="font-size:9px; font-weight:800; color:#d4af37; margin-left:4px; text-transform:uppercase;">OK LLIGA</span>
-            </div>` : ''}
+            <div style="display: flex; align-items: center; margin-top: 4px;">
+                <span style="font-size: 10px;">🏆</span>
+                <span style="font-size: 8px; font-weight: 800; color: #d4af37; margin-left: 4px;">OK LLIGA MASCULINA</span>
+            </div>
         </div>
     `).join('');
 
@@ -71,14 +70,15 @@ function showHome() {
         </div>
         
         <div class="widget" style="border-top: 4px solid #d4af37;">
-            <span class="label">🏆 CLASSIFICACIÓ REAL FEP</span>
-            <div style="margin-top:10px;">${rankHtml}</div>
-            <small style="color:#94a3b8; font-size:0.6rem; display:block; margin-top:10px;">*Actualitzat segons dades oficials FEP</small>
+            <span class="label">🏆 CLASSIFICACIÓ REAL OK LLIGA</span>
+            <div style="margin-top: 10px;">${rankHtml}</div>
+            <div style="text-align: center; margin-top: 12px; font-size: 0.6rem; color: #94a3b8; font-weight: bold;">
+                ACTUALITZACIÓ CADA 30 MINUTS ● FEP OFICIAL
+            </div>
         </div>
 
         <button class="btn-main" onclick="showList('CAT')">CATALUNYA</button>
-        <button class="btn-main" style="background:var(--blue)" onclick="showList('ESP')">ESPANYA</button>
-        
+        <button class="btn-main" style="background:#003366" onclick="showList('ESP')">ESPANYA</button>
         <button class="btn-main" style="background:#f59e0b; color:black; border:2px solid black;" onclick="window.open('${dadesOficials.reglamento}')">📜 REGLAMENTS 2025/2026</button>
     `;
     updateWeather();
@@ -87,17 +87,18 @@ function showHome() {
 function showList(r) {
     const filtrats = dadesOficials.equipos.filter(e => e.reg === r);
     const listHtml = filtrats.map(e => `
-        <div class="row" onclick="verCats('${e.n}')">
-            <div style="display:flex; align-items:center;">
-                <span>${e.n.toUpperCase()}</span>
-                ${e.ok ? '<span style="margin-left:8px; font-size:10px;">🏆</span>' : ''}
+        <div class="row" onclick="verCats('${e.n}')" style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; flex-direction: column;">
+                <span style="font-size: 0.9rem;">${e.n}</span>
+                ${e.ok ? '<span style="font-size: 7px; color: #d4af37; font-weight: 900;">🏆 OK LLIGA</span>' : ''}
             </div>
             <span>❯</span>
         </div>
     `).join('');
+    
     document.getElementById('main-content').innerHTML = `
-        <h3 class="label">EQUIPS ${r === 'CAT' ? 'DE CATALUNYA' : 'D\'ESPANYA'}</h3>
-        <div style="max-height: 400px; overflow-y: auto;">${listHtml}</div>
+        <h3 class="label">EQUIPS DE ${r === 'CAT' ? 'CATALUNYA' : 'ESPANYA'}</h3>
+        <div style="max-height: 400px; overflow-y: auto; padding-right: 5px;">${listHtml}</div>
         <button class="btn-main" style="background:#64748b; margin-top:20px;" onclick="showHome()">← TORNAR</button>
     `;
 }
@@ -118,10 +119,12 @@ async function updateWeather() {
                 const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}&current_weather=true`);
                 const data = await res.json();
                 document.getElementById('temp-val').innerText = Math.round(data.current_weather.temperature) + "°C";
-            } catch(e) { document.getElementById('temp-val').innerText = "18°C"; }
-        }, () => { document.getElementById('temp-val').innerText = "18°C"; });
+            } catch(e) { document.getElementById('temp-val').innerText = "12°C"; }
+        }, () => { document.getElementById('temp-val').innerText = "12°C"; });
     }
 }
 
-showHome();
+// Primera carga y activación de intervalo
+updateFromServer();
+setInterval(updateFromServer, 1800000); // 30 minutos
 </script>
