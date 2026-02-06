@@ -1,161 +1,20 @@
 {
-    "ultima_actualizacion": "06/02/2026 23:32",
-    "reglamento_url": "https://fep.es/federacion/reglamentos",
-    "equipos": [
-        {
-            "n": "Barça",
-            "pts": 0,
-            "reg": "CAT",
-            "ok": true,
-            "cats": [
-                "OK Lliga",
-                "OK Lliga Plata",
-                "Sènior B",
-                "Júnior",
-                "Juvenil",
-                "Infantil",
-                "Aleví"
-            ]
-        },
-        {
-            "n": "Noia Freixenet",
-            "pts": 0,
-            "reg": "CAT",
-            "ok": true,
-            "cats": [
-                "OK Lliga",
-                "Sènior B",
-                "Base FECAPA"
-            ]
-        },
-        {
-            "n": "Reus Deportiu Virginias",
-            "pts": 0,
-            "reg": "CAT",
-            "ok": true,
-            "cats": [
-                "OK Lliga",
-                "Femení",
-                "Base",
-                "Escola"
-            ]
-        },
-        {
-            "n": "Deportivo Liceo",
-            "pts": 0,
-            "reg": "ESP",
-            "ok": true,
-            "cats": [
-                "OK Lliga",
-                "OK Lliga Femenina",
-                "Base Galega"
-            ]
-        },
-        {
-            "n": "Voltregà Stern Motor",
-            "pts": 0,
-            "reg": "CAT",
-            "ok": true,
-            "cats": [
-                "OK Lliga",
-                "OK Lliga Femenina",
-                "Base"
-            ]
-        },
-        {
-            "n": "Parlem Calafell",
-            "pts": 0,
-            "reg": "CAT",
-            "ok": true,
-            "cats": [
-                "OK Lliga",
-                "Sènior B",
-                "Base"
-            ]
-        },
-        {
-            "n": "Igualada Rigat HC",
-            "pts": 0,
-            "reg": "CAT",
-            "ok": true,
-            "cats": [
-                "OK Lliga",
-                "Base",
-                "Veterans"
-            ]
-        },
-        {
-            "n": "PAS Alcoi",
-            "pts": 0,
-            "reg": "ESP",
-            "ok": true,
-            "cats": [
-                "OK Lliga",
-                "Base FPCV"
-            ]
-        },
-        {
-            "n": "Recam Làser CH Caldes",
-            "pts": 0,
-            "reg": "CAT",
-            "ok": true,
-            "cats": [
-                "OK Lliga",
-                "Base"
-            ]
-        },
-        {
-            "n": "CP Vic",
-            "pts": 0,
-            "reg": "CAT",
-            "ok": true,
-            "cats": [
-                "OK Lliga Plata",
-                "Sènior B",
-                "Base"
-            ]
-        },
-        {
-            "n": "CP Sant Cugat",
-            "pts": 0,
-            "reg": "CAT",
-            "ok": true,
-            "cats": [
-                "OK Lliga Plata",
-                "OK Lliga Femenina",
-                "Base"
-            ]
-        },
-        {
-            "n": "CP Manlleu",
-            "pts": 0,
-            "reg": "CAT",
-            "ok": true,
-            "cats": [
-                "OK Lliga Femenina",
-                "OK Lliga Plata",
-                "Base"
-            ]
-        },
-        {
-            "n": "Girona CH",
-            "pts": 0,
-            "reg": "CAT",
-            "ok": true,
-            "cats": [
-                "OK Lliga",
-                "Base"
-            ]
-        },
-        {
-            "n": "Finques Prats Lleida",
-            "pts": 0,
-            "reg": "CAT",
-            "ok": true,
-            "cats": [
-                "OK Lliga",
-                "Base"
-            ]
-        }
-    ]
+  "ultima_actualizacion": "07/02/2026",
+  "reglamento_url": "https://fep.es/federacion/reglamentos",
+  "equipos": [
+    {"n": "Barça", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "OK Lliga Plata", "Sènior B", "Júnior", "Juvenil", "Infantil", "Aleví"]},
+    {"n": "Noia Freixenet", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "Sènior B", "Base FECAPA"]},
+    {"n": "Reus Deportiu Virginias", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "Femení", "Base", "Escola"]},
+    {"n": "Deportivo Liceo", "pts": 0, "reg": "ESP", "cats": ["OK Lliga", "OK Lliga Femenina", "Base Galega"]},
+    {"n": "Voltregà Stern Motor", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "OK Lliga Femenina", "Base"]},
+    {"n": "Parlem Calafell", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "Sènior B", "Base"]},
+    {"n": "Igualada Rigat HC", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "Base", "Veterans"]},
+    {"n": "PAS Alcoi", "pts": 0, "reg": "ESP", "cats": ["OK Lliga", "Base FPCV"]},
+    {"n": "Recam Làser CH Caldes", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "Base"]},
+    {"n": "CP Vic", "pts": 0, "reg": "CAT", "cats": ["OK Lliga Plata", "Sènior B", "Base"]},
+    {"n": "CP Sant Cugat", "pts": 0, "reg": "CAT", "cats": ["OK Lliga Plata", "OK Lliga Femenina", "Base"]},
+    {"n": "CP Manlleu", "pts": 0, "reg": "CAT", "cats": ["OK Lliga Femenina", "OK Lliga Plata", "Base"]},
+    {"n": "Girona CH", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "Base"]},
+    {"n": "Finques Prats Lleida", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "Base"]}
+  ]
 }
