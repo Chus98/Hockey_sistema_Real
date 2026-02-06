@@ -3,32 +3,44 @@ from bs4 import BeautifulSoup
 import json
 from datetime import datetime
 
-def actualizar_puntos():
-    url = "https://www.hockeypatines.fep.es/league/3150"
-    headers = {'User-Agent': 'Mozilla/5.0'}
-    equipos_puntos = []
+def sincronizar_real():
+    url_fep = "https://www.hockeypatines.fep.es/league/3150"
+    archivo_json = 'hoquei_data.json'
     
     try:
-        res = requests.get(url, headers=headers, timeout=15)
-        soup = BeautifulSoup(res.text, 'html.parser')
+        # 1. Cargar tus datos actuales (equipos y categorías)
+        with open(archivo_json, 'r', encoding='utf-8') as f:
+            datos_app = json.load(f)
+        
+        # 2. Leer la web de la federación
+        response = requests.get(url_fep, timeout=15)
+        soup = BeautifulSoup(response.text, 'html.parser')
         tabla = soup.find('table')
+        
         if tabla:
-            for fila in tabla.find_all('tr')[1:]:
+            filas = tabla.find_all('tr')[1:]
+            for fila in filas:
                 cols = fila.find_all('td')
                 if len(cols) >= 10:
-                    nombre = cols[1].get_text(strip=True)
-                    pts = cols[9].get_text(strip=True)
-                    equipos_puntos.append({"n": nombre, "pts": int(pts) if pts.isdigit() else 0})
+                    nombre_web = cols[1].get_text(strip=True)
+                    puntos_web = int(cols[9].get_text(strip=True))
+                    
+                    # 3. Buscar el equipo en tu lista y actualizar SOLO los puntos
+                    for equipo in datos_app['equipos']:
+                        # Comprobación flexible de nombres
+                        if nombre_web.lower() in equipo['n'].lower() or equipo['n'].lower() in nombre_web.lower():
+                            equipo['pts'] = puntos_web
+
+        datos_app['ultima_actualizacion'] = datetime.now().strftime("%d/%m/%Y %H:%M")
+
+        # 4. Guardar los cambios manteniendo todo lo demás
+        with open(archivo_json, 'w', encoding='utf-8') as f:
+            json.dump(datos_app, f, ensure_ascii=False, indent=4)
         
-        output = {
-            "ultima_actualizacion": datetime.now().strftime("%d/%m/%Y %H:%M"),
-            "equipos": equipos_puntos
-        }
-        with open('hoquei_data.json', 'w', encoding='utf-8') as f:
-            json.dump(output, f, ensure_ascii=False, indent=4)
-        print("✅ Puntos actualizados.")
+        print("✅ Sincronización 100% Real Completada")
+
     except Exception as e:
         print(f"❌ Error: {e}")
 
 if __name__ == "__main__":
-    actualizar_puntos()
+    sincronizar_real()
