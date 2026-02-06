@@ -38,25 +38,31 @@
 </div>
 
 <script>
-let realData = { equipos: [], clasificacion: [], ultima_actualizacion: "" };
+// Ajustamos la estructura para que coincida con lo que envía tu robot de Python
+let realDataEquipos = []; 
 
 async function loadData() {
     try {
-        // Buscamos el archivo que crea el robot de Python
-        const response = await fetch('hoquei_data.json');
-        realData = await response.json();
-        document.getElementById('status-tag').innerText = "SINCRO REAL: " + realData.ultima_actualizacion;
+        // Añadimos ?v= para forzar la lectura de los datos nuevos del robot
+        const response = await fetch('hoquei_data.json?v=' + Date.now());
+        if (!response.ok) throw new Error();
+        realDataEquipos = await response.json();
+        
+        document.getElementById('status-tag').innerText = "SINCRO REAL ACTIVA ✅";
         showHome();
     } catch (e) {
-        document.getElementById('status-tag').innerText = "ERROR DE CONEXIÓ";
+        document.getElementById('status-tag').innerText = "ERROR DE CONEXIÓ ❌";
+        document.getElementById('main-content').innerHTML = '<div class="widget">Esperant dades del robot...</div>';
     }
 }
 
 function showHome() {
-    let classHtml = realData.clasificacion.map(c => `
+    // Clasificación de ejemplo (ya que el robot de momento solo envía la lista de equipos)
+    const destacados = realDataEquipos.filter(e => e.ok).slice(0, 4);
+    let classHtml = destacados.map((e, index) => `
         <div class="rank-item">
-            <span>${c.p}. ${c.n}</span>
-            <span style="color:var(--red)">${c.pts} PTS</span>
+            <span>${index + 1}. ${e.n}</span>
+            <span style="color:var(--red)">OK LLIGA</span>
         </div>
     `).join('');
 
@@ -69,8 +75,8 @@ function showHome() {
             </div>
         </div>
         <div class="widget">
-            <span class="label">🏆 CLASSIFICACIÓ REAL OK LLIGA</span>
-            ${classHtml}
+            <span class="label">🏆 EQUIPS DESTACATS (SINCRO)</span>
+            ${classHtml || 'No hi ha dades disponibles'}
         </div>
         <button class="btn-main" onclick="showList('CAT')">CATALUNYA</button>
         <button class="btn-main" style="background:var(--blue)" onclick="showList('ESP')">ESPANYA</button>
@@ -78,18 +84,20 @@ function showHome() {
     updateWeather();
 }
 
-// ... (Aquí van las mismas funciones de clima y lista de antes)
-// Solo asegúrate de usar realData.equipos para filtrar
 function showList(r) {
-    let list = realData.equipos.filter(c => c.reg === r).sort((a,b) => a.n.localeCompare(b.n)).map(c => `
-        <div class="row" onclick="showClub('${c.n}')">
-            <span>${c.n.toUpperCase()}</span>
+    let list = realDataEquipos.filter(c => c.reg === r).sort((a,b) => a.n.localeCompare(b.n)).map(c => `
+        <div class="row">
+            <div style="display:flex; flex-direction:column;">
+                <span>${c.n.toUpperCase()}</span>
+                <small style="font-size:0.6rem; color:#64748b; font-weight:normal;">${c.cats.join(' / ')}</small>
+            </div>
             ${c.ok ? '<span style="color:var(--gold); font-size:1.4rem;">🏆</span>' : '<span>❯</span>'}
         </div>
     `).join('');
+
     document.getElementById('main-content').innerHTML = `
         <h3 class="label">EQUIPS DE ${r === 'CAT' ? 'CATALUNYA' : 'ESPANYA'}</h3>
-        ${list}
+        ${list || '<p>No hi ha equips en aquesta regió</p>'}
         <button class="btn-main" style="background:#64748b; margin-top:20px;" onclick="showHome()">← TORNAR</button>
     `;
 }
@@ -97,10 +105,12 @@ function showList(r) {
 async function updateWeather() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (p) => {
-            const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}&current_weather=true`);
-            const data = await res.json();
-            document.getElementById('temp-val').innerText = Math.round(data.current_weather.temperature) + "°C";
-        });
+            try {
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}&current_weather=true`);
+                const data = await res.json();
+                document.getElementById('temp-val').innerText = Math.round(data.current_weather.temperature) + "°C";
+            } catch(e) { document.getElementById('temp-val').innerText = "--°C"; }
+        }, () => { document.getElementById('temp-val').innerText = "N/A"; });
     }
 }
 
