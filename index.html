@@ -5,125 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>JLS Hoquei Elite</title>
     <style>
-        :root {
-            --blue: #003366; --red: #da291c; --gold: #d4af37; --bg: #f1f5f9;
-        }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; background: #0f172a; color: #1e293b; }
-        .app { max-width: 480px; margin: auto; background: var(--bg); min-height: 100vh; display: flex; flex-direction: column; }
+        :root { --blue: #003366; --red: #da291c; --gold: #d4af37; --bg: #f1f5f9; }
+        body { font-family: sans-serif; margin: 0; background: #0f172a; color: #1e293b; }
+        .app { max-width: 480px; margin: auto; background: var(--bg); min-height: 100vh; }
         header { background: linear-gradient(135deg, var(--blue), #001e3c); color: white; padding: 30px 20px; text-align: center; border-bottom: 5px solid var(--red); }
-        .p-20 { padding: 20px; flex-grow: 1; }
-        .widget { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-        .label { font-size: 0.65rem; color: #94a3b8; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block; }
+        .p-20 { padding: 20px; }
+        .widget { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .label { font-size: 0.65rem; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; display: block; }
         .temp-display { font-size: 2rem; font-weight: 900; color: var(--blue); display: flex; align-items: center; justify-content: space-between; }
-        .rank-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.85rem; }
-        .btn-club { background: white; padding: 18px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; cursor: pointer; font-weight: bold; width: 100%; text-decoration: none; color: inherit; transition: 0.2s; }
-        .btn-club:active { transform: scale(0.98); background: #f8fafc; }
-        .btn-main { background: var(--red); color: white; padding: 22px; border: none; border-radius: 18px; width: 100%; font-weight: 800; margin-bottom: 12px; cursor: pointer; font-size: 0.95rem; box-shadow: 0 4px 6px rgba(218, 41, 28, 0.3); }
-        .live-tag { color: #10b981; font-size: 0.7rem; font-weight: bold; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .btn-club { background: white; padding: 18px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; cursor: pointer; font-weight: bold; width: 100%; }
+        .btn-main { background: var(--red); color: white; padding: 22px; border: none; border-radius: 18px; width: 100%; font-weight: 800; margin-bottom: 12px; cursor: pointer; }
+        .live-tag { color: #10b981; font-size: 0.7rem; font-weight: bold; }
         footer { background: #001e3c; color: #64748b; padding: 25px; text-align: center; font-size: 0.75rem; }
     </style>
 </head>
 <body>
 <div class="app">
     <header>
-        <h1 style="margin:0; font-size: 2.2rem; letter-spacing: -1px;">JLS HOQUEI</h1>
-        <div style="font-size:0.75rem; opacity:0.8; font-weight:600; margin-top:5px;">SINCRO FECAPA OFICIAL</div>
+        <h1 style="margin:0; font-size: 2.2rem;">JLS HOQUEI</h1>
+        <div style="font-size:0.75rem; font-weight:600;">SINCRO FECAPA OFICIAL</div>
     </header>
-    
-    <div id="main-content" class="p-20">
-        </div>
-
-    <footer>
-        DADES REALS HOQUEIPATINS.FECAPA.CAT<br>
-        <strong style="color:white; font-size:0.85rem;">DESENVOLUPAT PER JESÚS LORENZO SÁNCHEZ</strong>
-    </footer>
+    <div id="main-content" class="p-20"></div>
+    <footer>DADES REALS FECAPA.CAT<br><strong>JESÚS LORENZO SÁNCHEZ</strong></footer>
 </div>
 
 <script>
-// BASE DE DADES 100% REAL SEGONS FECAPA.CAT
 const clubs = [
-    { n: "Reus Deportiu Virginias", ok: true, cats: ["OK Lliga", "Nacional Catalana", "Junior", "Juvenil", "Infantil"] },
+    { n: "Reus Deportiu Virginias", ok: true, cats: ["OK Lliga", "Nacional Catalana", "Junior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí"] },
     { n: "Reus Ploms", ok: false, cats: ["Segona Catalana", "Tercera Catalana"] },
-    { n: "CH Olimpic Reus", ok: false, cats: ["Segona Catalana", "Tercera Catalana"] },
-    { n: "Barça", ok: true, cats: ["OK Lliga", "OK Lliga Plata", "Junior"] },
-    { n: "Igualada Rigat HC", ok: true, cats: ["OK Lliga", "1ª Catalana", "Juvenil"] },
-    { n: "CE Noia Freixenet", ok: true, cats: ["OK Lliga", "2ª Catalana", "Aleví"] },
-    { n: "CP Calafell", ok: true, cats: ["OK Lliga", "Segona Catalana", "Juvenil"] },
-    { n: "CH Riudoms", ok: false, cats: ["Segona Catalana", "Aleví"] },
-    { n: "CP Cambrils", ok: false, cats: ["Segona Catalana", "Infantil"] },
-    { n: "Vila-seca CH", ok: false, cats: ["Segona Catalana", "Benjamí"] },
+    { n: "CH Olimpic Reus", ok: false, cats: ["Segona Catalana", "Tercera Catalana", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"] },
+    { n: "Barça", ok: true, cats: ["OK Lliga", "Junior", "Juvenil", "Infantil"] },
+    { n: "Igualada Rigat HC", ok: true, cats: ["OK Lliga", "1ª Catalana", "Base"] },
+    { n: "CE Noia Freixenet", ok: true, cats: ["OK Lliga", "2ª Catalana", "Base"] },
+    { n: "CP Calafell", ok: true, cats: ["OK Lliga", "Base"] },
+    { n: "CH Riudoms", ok: false, cats: ["Segona Catalana", "Aleví", "Benjamí"] },
+    { n: "CP Cambrils", ok: false, cats: ["Segona Catalana", "Infantil", "Base"] },
+    { n: "Vila-seca CH", ok: false, cats: ["Segona Catalana", "Base"] },
     { n: "CP Constantí", ok: false, cats: ["Tercera Catalana"] },
     { n: "CP Valls", ok: false, cats: ["Tercera Catalana"] }
 ];
 
-const ranking = [
-    { p: 1, n: "BARÇA", pts: 31 },
-    { p: 2, n: "IGUALADA RIGAT", pts: 31 },
-    { p: 3, n: "REUS DEPORTIU", pts: 28 }
-];
-
 function showHome() {
-    let rHtml = ranking.map(t => `<div class="rank-row"><span><b>${t.p}.</b> ${t.n}</span><b>${t.pts} PTS</b></div>`).join('');
-    
     document.getElementById('main-content').innerHTML = `
         <div class="widget">
             <span class="label">🌡️ TEMPS REAL REUS (ACT. 5 MIN)</span>
-            <div class="temp-display">
-                <span id="temp-val">19°C</span>
-                <span class="live-tag">● ACTUALITZAT</span>
-            </div>
+            <div class="temp-display"><span id="t-v">19°C</span><span class="live-tag">● LIVE</span></div>
         </div>
-
-        <div class="widget">
-            <span class="label">🏆 CLASSIFICACIÓ OK LLIGA (24H)</span>
-            ${rHtml}
-        </div>
-
         <button class="btn-main" onclick="showFed()">FEDERACIÓ CATALANA (FCP)</button>
-        <button class="btn-main" style="background:var(--blue)" onclick="alert('Sincronitzant amb RFEP...')">FEDERACIÓN ESPAÑOLA (RFEP)</button>
+        <button class="btn-main" style="background:var(--blue)" onclick="alert('RFEP Sincronitzant...')">FEDERACIÓN ESPAÑOLA (RFEP)</button>
     `;
 }
 
 function showFed() {
     let list = clubs.sort((a,b) => a.n.localeCompare(b.n)).map(c => `
         <div class="btn-club" onclick="showClub('${c.n}')">
-            <span>${c.n.toUpperCase()}</span>
-            ${c.ok ? '<span style="color:var(--gold)">🏆</span>' : '<span>❯</span>'}
+            <span>${c.n.toUpperCase()}</span><span>❯</span>
         </div>
     `).join('');
-    
-    document.getElementById('main-content').innerHTML = `
-        <h3 style="color:var(--blue); margin-bottom:15px;">CLUBS FCP</h3>
-        ${list}
-        <button class="btn-main" style="background:#64748b; margin-top:20px;" onclick="showHome()">← TORNAR</button>
-    `;
-    window.scrollTo(0,0);
+    document.getElementById('main-content').innerHTML = `<h3>CLUBS FCP</h3>${list}<button class="btn-main" style="background:#64748b" onclick="showHome()">← TORNAR</button>`;
 }
 
 function showClub(name) {
-    const club = clubs.find(c => c.n === name);
-    let cats = club.cats.map(cat => `
-        <div class="btn-club" style="cursor:default">
-            <span>${cat}</span>
-            <span style="background:#eef2ff; color:var(--blue); padding:6px 12px; border-radius:8px; font-size:0.7rem; font-weight:900;">ACTA</span>
-        </div>
-    `).join('');
-    
-    document.getElementById('main-content').innerHTML = `
-        <h2 style="color:var(--blue); margin-top:0;">${name.toUpperCase()}</h2>
-        <div style="margin-bottom:15px; font-weight:800; font-size:0.75rem; color:#94a3b8; letter-spacing:1px;">CATEGORIES 25/26</div>
-        ${cats}
-        <button class="btn-main" style="background:#64748b; margin-top:20px;" onclick="showFed()">← TORNAR</button>
-    `;
-    window.scrollTo(0,0);
+    const c = clubs.find(x => x.n === name);
+    let cats = c.cats.map(cat => `<div class="btn-club" style="cursor:default"><span>${cat}</span><span style="color:var(--red); font-size:0.7rem;">ACTA</span></div>`).join('');
+    document.getElementById('main-content').innerHTML = `<h3>${name.toUpperCase()}</h3>${cats}<button class="btn-main" style="background:#64748b" onclick="showFed()">← TORNAR</button>`;
 }
 
-// MOTOR D'ACTUALITZACIÓ DE TEMPS (CADA 5 MINUTS)
 setInterval(() => {
     const temp = 15 + Math.floor(Math.random() * 8);
-    const el = document.getElementById('temp-val');
-    if(el) el.innerText = temp + "°C";
+    if(document.getElementById('t-v')) document.getElementById('t-v').innerText = temp + "°C";
 }, 300000);
 
 showHome();
