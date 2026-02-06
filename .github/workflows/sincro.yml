@@ -8,18 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
-
       - name: Install dependencies
         run: pip install requests beautifulsoup4
-
       - name: Run Robot
         run: python sincronizar.py
-
       - name: Commit and Push
         run: |
           git config --global user.name 'JLS-Robot'
