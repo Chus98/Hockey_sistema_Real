@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JLS Hockey Pro Elite</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+<div id="app-container">
+    <header>
+        <h1 style="margin:0; font-size: 2rem; font-weight: 900; letter-spacing: -1px;">JLS HOCKEY</h1>
+        <div style="font-size: 0.8rem; font-weight: 600; opacity: 0.8; margin-top: 5px;">PLATAFORMA FEDERATIVA ELITE</div>
+    </header>
+    <div class="view-content">
+        <div class="widget-card">
+            <span class="widget-title">🌡️ Estado de la Pista</span>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-weight:700; font-size:1.1rem;">{{ ciudad }}</div>
+                <div class="temp-val">{{ temperatura }}</div>
+            </div>
+        </div>
+        <div class="widget-card">
+            <span class="widget-title">🏆 Clasificación OK Liga (Actualizada)</span>
+            {% for equipo in clasificacion %}
+            <div class="rank-row">
+                <div style="display:flex; align-items:center;">
+                    <span class="rank-num">{{ equipo.p }}</span>
+                    <span style="font-weight:700; font-size:0.8rem; margin-left:10px;">{{ equipo.n }}</span>
+                </div>
+                <span style="font-weight:900; color:var(--rfep-blue);">{{ equipo.pts }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="btn-main">FEDERACIÓ CATALANA (FCP)</button>
+        <button class="btn-main" style="background:var(--rfep-blue)">FEDERACIÓN ESPAÑOLA (RFEP)</button>
+    </div>
+    <footer>
+        <p>SISTEMA DESARROLLADO POR<br><strong style="color:white; font-size:0.9rem;">JESÚS LORENZO SÁNCHEZ</strong></p>
+    </footer>
+</div>
+</body>
+</html>
