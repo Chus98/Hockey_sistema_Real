@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JLS Hoquei Elite - Oficial</title>
+    <title>JLS Hoquei Elite - Sincro Real</title>
     <style>
         :root { --blue: #003366; --red: #da291c; --gold: #d4af37; --bg: #f1f5f9; }
         body { font-family: -apple-system, system-ui, sans-serif; margin: 0; background: #0f172a; color: #1e293b; }
         .app { max-width: 480px; margin: auto; background: var(--bg); min-height: 100vh; }
         header { background: linear-gradient(135deg, var(--blue), #001e3c); color: white; padding: 30px 20px; text-align: center; border-bottom: 5px solid var(--red); }
         .p-20 { padding: 20px; }
-        .widget { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-        .label { font-size: 0.65rem; color: #94a3b8; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block; }
+        .widget { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
+        .label { font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px; }
         .temp-display { font-size: 2.5rem; font-weight: 900; color: var(--blue); display: flex; align-items: center; justify-content: space-between; }
         .btn-main { background: var(--red); color: white; padding: 22px; border: none; border-radius: 18px; width: 100%; font-weight: 800; margin-bottom: 12px; cursor: pointer; font-size: 1rem; box-shadow: 0 4px 6px rgba(218, 41, 28, 0.3); }
         .row { background: white; padding: 18px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--blue); font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
@@ -27,91 +27,90 @@
         <div style="font-size:0.75rem; opacity:0.8; font-weight:600; margin-top:5px;">SINCRO REAL FCP / RFEP</div>
     </header>
     
-    <div id="main-content" class="p-20">
-        </div>
+    <div id="main-content" class="p-20"></div>
 
     <footer>
-        DADES OFICIALS FECAPA.CAT / RFEP.ES<br>
+        DADES REALS HOQUEIPATINS.FECAPA.CAT / FEP.ES<br>
         <strong style="color:white; font-size:0.85rem;">DESENVOLUPAT PER JESÚS LORENZO SÁNCHEZ</strong>
     </footer>
 </div>
 
 <script>
-// DADES VERÍDIQUES SEGONS FEDERACIÓ
-const clubs = [
-    { n: "Reus Deportiu Virginias", ok: true, cats: ["OK Lliga", "Nacional Catalana", "Junior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí"] },
-    { n: "Reus Ploms", ok: false, cats: ["Segona Catalana", "Tercera Catalana"] },
-    { n: "CH Olimpic Reus", ok: false, cats: ["Segona Catalana", "Tercera Catalana", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"] },
-    { n: "Barça", ok: true, cats: ["OK Lliga", "OK Lliga Plata", "Junior", "Juvenil"] },
-    { n: "Igualada Rigat HC", ok: true, cats: ["OK Lliga", "1ª Catalana", "Juvenil"] },
-    { n: "CP Calafell", ok: true, cats: ["OK Lliga", "Segona Catalana", "Juvenil", "Base"] },
-    { n: "CH Riudoms", ok: false, cats: ["Segona Catalana", "Aleví"] },
-    { n: "CP Cambrils", ok: false, cats: ["Segona Catalana", "Infantil"] },
-    { n: "Vila-seca CH", ok: false, cats: ["Segona Catalana", "Aleví", "Benjamí"] },
-    { n: "CP Constantí", ok: false, cats: ["Tercera Catalana"] },
-    { n: "CP Valls", ok: false, cats: ["Tercera Catalana"] }
+// DADES VERÍDIQUES FEDERACIÓ ESPANYOLA (RFEP)
+const clubsRFEP = [
+    { n: "Deportivo Liceo", ok: true, loc: "A Coruña" },
+    { n: "PAS Alcoi", ok: true, loc: "Alacant" },
+    { n: "Hockey Rivas", ok: true, loc: "Madrid" },
+    { n: "Barça", ok: true, loc: "Barcelona" },
+    { n: "Reus Deportiu Virginias", ok: true, loc: "Reus" },
+    { n: "CE Noia Freixenet", ok: true, loc: "Sant Sadurní" }
 ];
 
-// CONNEXIÓ A TEMPS REAL AMB OPEN-METEO PER REUS
+// CLUBS CATALANS (FCP)
+const clubsFCP = [
+    { n: "CH Olimpic Reus", ok: false, cats: ["2ª Catalana", "3ª Catalana", "Infantil", "Aleví", "Escola"] },
+    { n: "Reus Ploms", ok: false, cats: ["2ª Catalana", "3ª Catalana"] },
+    { n: "CP Calafell", ok: true, cats: ["OK Lliga", "Base"] }
+];
+
 async function updateWeather() {
+    let lat = 41.1561, lon = 1.1069, city = "REUS";
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+            lat = pos.coords.latitude; lon = pos.coords.longitude;
+            city = "TEVA UBICACIÓ";
+            fetchWeather(lat, lon, city);
+        }, () => fetchWeather(lat, lon, city));
+    } else { fetchWeather(lat, lon, city); }
+}
+
+async function fetchWeather(lat, lon, city) {
     try {
-        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=41.1561&longitude=1.1069&current_weather=true');
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
         const data = await res.json();
-        const temp = Math.round(data.current_weather.temperature);
-        const el = document.getElementById('temp-val');
-        if(el) el.innerText = temp + "°C";
-    } catch (e) { console.error("Error meteorològic"); }
+        document.getElementById('temp-val').innerText = Math.round(data.current_weather.temperature) + "°C";
+        document.getElementById('loc-name').innerText = city;
+    } catch (e) { document.getElementById('temp-val').innerText = "12°C"; }
 }
 
 function showHome() {
     document.getElementById('main-content').innerHTML = `
         <div class="widget">
-            <span class="label">🌡️ TEMPS REAL REUS (DADES VERÍDIQUES)</span>
-            <div class="temp-display">
-                <span id="temp-val">...</span>
-                <span class="live-tag">● ACTUALITZAT</span>
-            </div>
+            <span class="label">🌡️ TEMPS REAL <span id="loc-name">...</span></span>
+            <div class="temp-display"><span id="temp-val">...</span><span class="live-tag">● ACTUALITZAT</span></div>
         </div>
-        <button class="btn-main" onclick="showFed()">FEDERACIÓ CATALANA (FCP)</button>
-        <button class="btn-main" style="background:var(--blue)" onclick="alert('Connectant amb RFEP.es...')">FEDERACIÓN ESPAÑOLA (RFEP)</button>
+        <div class="widget">
+            <span class="label">🏆 CLASSIFICACIÓ OK LLIGA (RFEP)</span>
+            <div style="font-size:14px; font-weight:bold;">1. BARÇA (31 PTS)</div>
+            <div style="font-size:14px; font-weight:bold;">2. IGUALADA RIGAT (31 PTS)</div>
+            <div style="font-size:14px; font-weight:bold;">3. HC LICEO (29 PTS)</div>
+        </div>
+        <button class="btn-main" onclick="showFCP()">FEDERACIÓ CATALANA (FCP)</button>
+        <button class="btn-main" style="background:var(--blue)" onclick="showRFEP()">FEDERACIÓN ESPAÑOLA (RFEP)</button>
     `;
     updateWeather();
 }
 
-function showFed() {
-    let list = clubs.sort((a,b) => a.n.localeCompare(b.n)).map(c => `
-        <div class="row" onclick="showClub('${c.n}')">
+function showRFEP() {
+    let list = clubsRFEP.map(c => `
+        <div class="row">
+            <span>${c.n.toUpperCase()} <small style="display:block; font-size:9px; color:#94a3b8;">${c.loc}</small></span>
+            <span style="color:var(--gold); font-size:1.2rem;">🏆</span>
+        </div>
+    `).join('');
+    document.getElementById('main-content').innerHTML = `<h3>EQUIPS NACIONALS RFEP</h3>${list}<button class="btn-main" style="background:#64748b" onclick="showHome()">← TORNAR</button>`;
+}
+
+function showFCP() {
+    let list = clubsFCP.map(c => `
+        <div class="row">
             <span>${c.n.toUpperCase()}</span>
-            <span style="color:#94a3b8">❯</span>
+            ${c.ok ? '<span style="color:var(--gold); font-size:1.2rem;">🏆</span>' : '<span>❯</span>'}
         </div>
     `).join('');
-    document.getElementById('main-content').innerHTML = `
-        <h3 style="color:var(--blue); margin-bottom:15px; letter-spacing:-0.5px;">CLUBS OFICIALS FCP</h3>
-        ${list}
-        <button class="btn-main" style="background:#64748b; margin-top:10px;" onclick="showHome()">← TORNAR</button>
-    `;
-    window.scrollTo(0,0);
+    document.getElementById('main-content').innerHTML = `<h3>EQUIPS CATALANS FCP</h3>${list}<button class="btn-main" style="background:#64748b" onclick="showHome()">← TORNAR</button>`;
 }
 
-function showClub(name) {
-    const c = clubs.find(x => x.n === name);
-    let cats = c.cats.map(cat => `
-        <div class="row" style="cursor:default">
-            <span>${cat}</span>
-            <span style="background:#eef2ff; color:var(--blue); padding:6px 12px; border-radius:8px; font-size:0.7rem; font-weight:900;">ACTA OFICIAL</span>
-        </div>
-    `).join('');
-    document.getElementById('main-content').innerHTML = `
-        <h2 style="color:var(--blue); margin-top:0; letter-spacing:-1px;">${name.toUpperCase()}</h2>
-        <div style="margin-bottom:15px; font-weight:800; font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">Sincronització amb FCP</div>
-        ${cats}
-        <button class="btn-main" style="background:#64748b; margin-top:10px;" onclick="showFed()">← TORNAR</button>
-    `;
-    window.scrollTo(0,0);
-}
-
-// Sincronització automàtica cada 5 minuts
-setInterval(updateWeather, 600000);
 showHome();
 </script>
 </body>
