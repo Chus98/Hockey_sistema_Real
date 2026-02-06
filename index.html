@@ -1,81 +1,66 @@
 <script>
-// DATOS FIJOS (Para que nunca se quede en blanco)
-let fullData = {
-    ultima_actualizacion: "Actualitzant...",
-    reglamento_url: "https://fep.es/federacion/reglamentos",
-    equipos: [
-        {"n": "CP Sant Cugat", "pts": 0, "reg": "CAT", "ok": true, "cats": ["OK Lliga Plata", "Femení", "Base"]},
-        {"n": "CH Caldes Recam Làser", "pts": 0, "reg": "CAT", "ok": true, "cats": ["OK Lliga", "Juvenil"]},
-        {"n": "CP Vic", "pts": 0, "reg": "CAT", "ok": true, "cats": ["OK Lliga Plata", "Junior"]},
-        {"n": "CP Manlleu", "pts": 0, "reg": "CAT", "ok": true, "cats": ["OK Lliga Femenina"]},
-        {"n": "Igualada Rigat HC", "pts": 0, "reg": "CAT", "ok": true, "cats": ["OK Lliga"]},
-        {"n": "Deportivo Liceo", "pts": 0, "reg": "ESP", "ok": true, "cats": ["OK Lliga", "Base"]},
-        {"n": "PAS Alcoi", "pts": 0, "reg": "ESP", "ok": true, "cats": ["OK Lliga"]}
-    ]
-};
+let appData = { equipos: [], reglamento_url: "https://fep.es/federacion/reglamentos" };
 
 async function loadData() {
     try {
         const response = await fetch('hoquei_data.json?v=' + Date.now());
-        const remoteData = await response.json();
-        // Si el archivo remoto tiene datos, actualizamos solo los puntos
-        if (remoteData && remoteData.equipos) {
-            fullData.ultima_actualizacion = remoteData.ultima_actualizacion;
-            fullData.equipos.forEach(local => {
-                const r = remoteData.equipos.find(rem => rem.n.includes(local.n) || local.n.includes(rem.n));
-                if (r) local.pts = r.pts;
-            });
-        }
-    } catch (e) { console.log("Cargando desde backup local..."); }
-    showHome();
+        appData = await response.json();
+    } catch (e) {
+        console.error("No s'han pogut carregar les dades oficials.");
+    }
+    renderHome();
 }
 
-function showHome() {
-    let equipos = fullData.equipos || [];
-    let classHtml = [...equipos].sort((a,b) => b.pts - a.pts).slice(0, 5).map((c, i) => `
-        <div class="rank-item" onclick="verCategorias('${c.n}')" style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee; cursor:pointer;">
-            <span>${i+1}. ${c.n}</span>
-            <strong style="color:#da291c">${c.pts} PTS</strong>
+function renderHome() {
+    // Clasificación real ordenada por los puntos que saca el robot
+    const ranking = [...appData.equipos].sort((a,b) => b.pts - a.pts).slice(0, 5);
+    
+    let htmlRank = ranking.map((e, i) => `
+        <div class="rank-item" onclick="verCategorias('${e.n}')" style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee; cursor:pointer;">
+            <span>${i+1}. ${e.n}</span>
+            <strong style="color:#da291c">${e.pts} PTS</strong>
         </div>
     `).join('');
 
     document.getElementById('main-content').innerHTML = `
         <div class="widget" style="background:white; border-radius:20px; padding:20px; margin-bottom:15px; box-shadow:0 10px 15px rgba(0,0,0,0.1);">
-            <span style="font-size:10px; color:#94a3b8; font-weight:800;">🌡️ TEMPS REAL (GPS)</span>
+            <span style="font-size:10px; color:#94a3b8; font-weight:800;">🌡️ TIEMPO REAL (GPS)</span>
             <div style="font-size:2.5rem; font-weight:900; color:#003366; display:flex; align-items:center; justify-content:space-between;">
                 <span id="temp-val">...</span>
                 <span style="color:#10b981; font-size:0.7rem;">● LIVE</span>
             </div>
         </div>
         <div class="widget" style="background:white; border-radius:20px; padding:20px; margin-bottom:15px; box-shadow:0 10px 15px rgba(0,0,0,0.1);">
-            <span style="font-size:10px; color:#94a3b8; font-weight:800;">🏆 CLASSIFICACIÓ REAL OK LLIGA</span>
-            <div style="margin-top:10px;">${classHtml}</div>
+            <span style="font-size:10px; color:#94a3b8; font-weight:800;">🏆 CLASIFICACIÓN REAL FEP</span>
+            <div style="margin-top:10px;">${htmlRank || 'Actualitzant...'}</div>
         </div>
-        <button class="btn-main" onclick="showList('CAT')" style="background:#da291c; color:white; padding:20px; border:none; border-radius:15px; width:100%; font-weight:800; margin-bottom:10px; cursor:pointer;">CATALUNYA</button>
-        <button class="btn-main" onclick="showList('ESP')" style="background:#003366; color:white; padding:20px; border:none; border-radius:15px; width:100%; font-weight:800; margin-bottom:10px; cursor:pointer;">ESPANYA</button>
-        <button class="btn-main" onclick="window.open('${fullData.reglamento_url}', '_blank')" style="background:#f59e0b; color:black; padding:15px; border:2px solid black; border-radius:15px; width:100%; font-weight:800; margin-top:10px; cursor:pointer;">📜 REGLAMENTS 2025/2026</button>
+        <button class="btn-main" onclick="showSection('CAT')" style="background:#da291c; color:white; padding:20px; border:none; border-radius:15px; width:100%; font-weight:800; margin-bottom:10px; cursor:pointer;">CATALUNYA</button>
+        <button class="btn-main" onclick="showSection('ESP')" style="background:#003366; color:white; padding:20px; border:none; border-radius:15px; width:100%; font-weight:800; margin-bottom:10px; cursor:pointer;">ESPANYA</button>
+        <button class="btn-main" onclick="window.open('${appData.reglamento_url}', '_blank')" style="background:#f59e0b; color:black; padding:15px; border:2px solid black; border-radius:15px; width:100%; font-weight:800; margin-top:10px; cursor:pointer;">📜 REGLAMENTS 2025/2026</button>
     `;
     updateWeather();
 }
 
-function showList(r) {
-    let filtered = fullData.equipos.filter(c => r === 'CAT' ? c.reg === 'CAT' : c.reg !== 'CAT');
-    let listHtml = filtered.map(c => `
-        <div onclick="verCategorias('${c.n}')" style="background:white; padding:15px; margin-bottom:10px; border-radius:15px; display:flex; justify-content:space-between; border-left:5px solid #003366; font-weight:bold; cursor:pointer;">
-            <span>${c.n.toUpperCase()}</span>
+function showSection(reg) {
+    const list = appData.equipos.filter(e => e.reg === reg);
+    let htmlList = list.map(e => `
+        <div onclick="verCategorias('${e.n}')" style="background:white; padding:15px; margin-bottom:10px; border-radius:15px; display:flex; justify-content:space-between; border-left:5px solid #003366; font-weight:bold; cursor:pointer;">
+            <span>${e.n.toUpperCase()}</span>
             <span>❯</span>
         </div>
     `).join('');
     document.getElementById('main-content').innerHTML = `
-        <h3 style="font-size:10px; color:#94a3b8; font-weight:800; text-transform:uppercase; margin-bottom:15px;">EQUIPS DE ${r === 'CAT' ? 'CATALUNYA' : 'ESPANYA'}</h3>
-        ${listHtml}
-        <button onclick="showHome()" style="background:#64748b; color:white; padding:15px; border:none; border-radius:15px; width:100%; font-weight:800; margin-top:20px; cursor:pointer;">← TORNAR</button>
+        <h3 style="font-size:10px; color:#94a3b8; font-weight:800; text-transform:uppercase;">EQUIPS ${reg}</h3>
+        ${htmlList}
+        <button onclick="renderHome()" style="background:#64748b; color:white; padding:15px; border:none; border-radius:15px; width:100%; font-weight:800; margin-top:20px; cursor:pointer;">← TORNAR</button>
     `;
 }
 
-function verCategorias(n) {
-    const e = fullData.equipos.find(i => i.n === n);
-    if(e) alert("📌 CLUB: " + e.n + "\n\n📂 CATEGORIES:\n• " + e.cats.join('\n• '));
+function verCategorias(nombre) {
+    const club = appData.equipos.find(e => e.n === nombre);
+    if(club) {
+        alert("📌 CLUB: " + club.n + "\n\n📂 CATEGORIES OFICIALS:\n• " + club.cats.join('\n• '));
+    }
 }
 
 async function updateWeather() {
