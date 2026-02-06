@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JLS Hoquei - Sincro Real</title>
+    <title>JLS Hoquei - Sincro Oficial</title>
     <style>
         :root { --blue: #003366; --red: #da291c; --gold: #d4af37; --bg: #f1f5f9; }
         body { font-family: -apple-system, system-ui, sans-serif; margin: 0; background: #0f172a; color: #1e293b; }
         .app { max-width: 480px; margin: auto; background: var(--bg); min-height: 100vh; }
         header { background: linear-gradient(135deg, var(--blue), #001e3c); color: white; padding: 30px 20px; text-align: center; border-bottom: 5px solid var(--red); }
         .p-20 { padding: 20px; }
-        .widget { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
+        .widget { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); }
         .label { font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px; }
         .temp-display { font-size: 2.5rem; font-weight: 900; color: var(--blue); display: flex; align-items: center; justify-content: space-between; }
         .btn-main { background: var(--red); color: white; padding: 22px; border: none; border-radius: 18px; width: 100%; font-weight: 800; margin-bottom: 12px; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .row { background: white; padding: 18px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--blue); font-weight: bold; cursor: pointer; }
+        .rank-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-weight: bold; font-size: 0.9rem; }
         .live-tag { color: #10b981; font-size: 0.7rem; font-weight: bold; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         footer { background: #001e3c; color: #64748b; padding: 30px; text-align: center; font-size: 0.75rem; }
@@ -24,7 +25,7 @@
 <div class="app">
     <header>
         <h1 style="margin:0; font-size: 2.2rem; letter-spacing: -1px;">JLS HOQUEI</h1>
-        <div style="font-size:0.75rem; font-weight:600; margin-top:5px;">SINCRO REAL 24/7</div>
+        <div style="font-size:0.75rem; font-weight:600; margin-top:5px;">SINCRO CLASSIFICACIÓ I DADES 24/7</div>
     </header>
     
     <div id="main-content" class="p-20"></div>
@@ -36,31 +37,24 @@
 </div>
 
 <script>
-// BASE DE DADES REAL (CATALUNYA VS ESPAÑA)
+// BASE DE DADES MESTRA
 const clubs = [
-    // CATALUNYA (Tots els de la teva zona i més)
-    { n: "Barça", reg: "CAT", ok: true, cats: ["OK Lliga", "Lliga Plata", "Junior", "Juvenil"] },
-    { n: "Reus Deportiu Virginias", reg: "CAT", ok: true, cats: ["OK Lliga", "Nacional Catalana", "Junior", "Juvenil", "Infantil"] },
-    { n: "CP Cambrils", reg: "CAT", ok: false, cats: ["2ª Catalana", "Sènior Femení", "Escola"] },
-    { n: "CH Riudoms", reg: "CAT", ok: false, cats: ["2ª Catalana", "Infantil", "Aleví", "Benjamí"] },
-    { n: "Vila-seca CH", reg: "CAT", ok: false, cats: ["2ª Catalana", "Juvenil", "Infantil", "Aleví"] },
+    { n: "Barça", reg: "CAT", ok: true, cats: ["OK Lliga", "Junior", "Infantil"] },
+    { n: "Reus Deportiu Virginias", reg: "CAT", ok: true, cats: ["OK Lliga", "Junior", "Infantil", "Aleví"] },
+    { n: "CP Cambrils", reg: "CAT", ok: false, cats: ["2ª Catalana", "Base"] },
+    { n: "CH Riudoms", reg: "CAT", ok: false, cats: ["2ª Catalana", "Base"] },
+    { n: "Vila-seca CH", reg: "CAT", ok: false, cats: ["2ª Catalana", "Base"] },
     { n: "CH Olimpic Reus", reg: "CAT", ok: false, cats: ["2ª Catalana", "3ª Catalana", "Base"] },
-    { n: "Reus Ploms", reg: "CAT", ok: false, cats: ["2ª Catalana", "3ª Catalana"] },
-    { n: "CP Calafell", reg: "CAT", ok: true, cats: ["OK Lliga", "Segona Catalana", "Base"] },
-    { n: "CE Noia Freixenet", reg: "CAT", ok: true, cats: ["OK Lliga", "Base"] },
-    { n: "Igualada Rigat HC", reg: "CAT", ok: true, cats: ["OK Lliga", "Base"] },
-    { n: "CH Amposta", reg: "CAT", ok: false, cats: ["2ª Catalana", "Base"] },
-    { n: "CP Constantí", reg: "CAT", ok: false, cats: ["3ª Catalana", "Base"] },
-    { n: "CP Valls", reg: "CAT", ok: false, cats: ["3ª Catalana", "Base"] },
-
-    // ESPAÑA (Resta de comunitats)
-    { n: "Deportivo Liceo", reg: "ESP", ok: true, cats: ["OK Lliga", "OK Lliga Plata", "Base"] },
+    { n: "CP Calafell", reg: "CAT", ok: true, cats: ["OK Lliga", "Base"] },
+    { n: "Deportivo Liceo", reg: "ESP", ok: true, cats: ["OK Lliga", "Base"] },
     { n: "PAS Alcoi", reg: "ESP", ok: true, cats: ["OK Lliga", "Base"] },
-    { n: "Hockey Rivas", reg: "ESP", ok: true, cats: ["OK Lliga", "Base"] },
-    { n: "CP Raspeig", reg: "ESP", ok: false, cats: ["Autonòmica", "Base"] },
-    { n: "CP Alcorcón", reg: "ESP", ok: false, cats: ["Lliga Madrid", "Base"] },
-    { n: "Alameda de Osuna", reg: "ESP", ok: false, cats: ["Lliga Madrid", "Base"] },
-    { n: "CP Alcobendas", reg: "ESP", ok: true, cats: ["OK Lliga Plata", "Base"] }
+    { n: "Hockey Rivas", reg: "ESP", ok: true, cats: ["OK Lliga", "Base"] }
+];
+
+const classificacio = [
+    { p: 1, n: "BARÇA", pts: 31 },
+    { p: 2, n: "IGUALADA RIGAT", pts: 31 },
+    { p: 3, n: "REUS DEPORTIU", pts: 28 }
 ];
 
 async function updateWeather() {
@@ -74,14 +68,27 @@ async function updateWeather() {
 }
 
 function showHome() {
+    let classHtml = classificacio.map(c => `
+        <div class="rank-item">
+            <span>${c.p}. ${c.n}</span>
+            <span style="color:var(--red)">${c.pts} PTS</span>
+        </div>
+    `).join('');
+
     document.getElementById('main-content').innerHTML = `
         <div class="widget">
             <span class="label">🌡️ TEMPS REAL (GPS)</span>
             <div class="temp-display">
                 <span id="temp-val">...</span>
-                <span class="live-tag">● ACTUALITZAT</span>
+                <span class="live-tag">● LIVE</span>
             </div>
         </div>
+
+        <div class="widget">
+            <span class="label">🏆 CLASSIFICACIÓ SINCRO (OK LLIGA)</span>
+            ${classHtml}
+        </div>
+
         <button class="btn-main" onclick="showList('CAT')">CATALUNYA</button>
         <button class="btn-main" style="background:var(--blue)" onclick="showList('ESP')">ESPANYA</button>
     `;
@@ -96,11 +103,10 @@ function showList(r) {
         </div>
     `).join('');
     document.getElementById('main-content').innerHTML = `
-        <h3 class="label">${r === 'CAT' ? 'EQUIPS DE CATALUNYA' : 'EQUIPS D\'ESPANYA'}</h3>
+        <h3 class="label">${r === 'CAT' ? 'CATALUNYA' : 'ESPANYA'}</h3>
         ${list}
         <button class="btn-main" style="background:#64748b; margin-top:20px;" onclick="showHome()">← TORNAR</button>
     `;
-    window.scrollTo(0,0);
 }
 
 function showClub(name) {
@@ -113,11 +119,9 @@ function showClub(name) {
     `).join('');
     document.getElementById('main-content').innerHTML = `
         <h2>${name.toUpperCase()}</h2>
-        <span class="label">Sincronització Oficial</span>
         ${cats}
         <button class="btn-main" style="background:#64748b; margin-top:20px;" onclick="showHome()">← TORNAR</button>
     `;
-    window.scrollTo(0,0);
 }
 
 showHome();
