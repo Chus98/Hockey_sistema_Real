@@ -35,7 +35,7 @@ def obtener_datos_reales():
             
             # --- ESPAÑA (Madrid, Valencia, Galicia, etc.) ---
             {"n": "Deportivo Liceo", "reg": "ESP", "ok": True, "cats": ["OK Lliga", "Base Galega"]},
-            {"n": "PAS Alcoi", "reg": "ESP", "ok": True, "cats: ["OK Lliga", "Base Valenciana"]},
+            {"n": "PAS Alcoi", "reg": "ESP", "ok": True, "cats": ["OK Lliga", "Base Valenciana"]},
             {"n": "Hockey Rivas", "reg: "ESP", "ok": True, "cats": ["OK Lliga", "Base Madrid"]},
             {"n": "CP Alcobendas", "reg": "ESP", "ok": True, "cats": ["OK Lliga Plata", "Base"]},
             {"n": "CP Alcorcón", "reg": "ESP", "ok": False, "cats": ["Lliga Madrid", "Base"]},
