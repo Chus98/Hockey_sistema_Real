@@ -1,0 +1,25 @@
+name: Sincronitzacio Real JLS
+on:
+  schedule:
+    - cron: '0 * * * *' # Se ejecuta cada hora sola
+  workflow_dispatch: # Permite que tú le des al botón de "Play" cuando quieras
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+      - name: Run Robot
+        run: python sincronizar.py
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'JLS-Robot'
+          git config --global user.email 'robot@jls.com'
+          git add hoquei_data.json
+          git commit -m "Actualització dades reals 100%" || exit 0
+          git push
