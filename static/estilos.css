@@ -1,0 +1,12 @@
+:root { --fcp-red: #ff3e3e; --rfep-blue: #004a99; --gold: #d4af37; --bg: #0f172a; --card-bg: rgba(255, 255, 255, 0.98); --text-main: #1e293b; }
+body { font-family: 'Inter', sans-serif; margin: 0; background: #0f172a; display: flex; justify-content: center; color: var(--text-main); min-height: 100vh; }
+#app-container { width: 100%; max-width: 480px; background: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.5); }
+header { background: linear-gradient(135deg, var(--rfep-blue) 0%, #001e3c 100%); color: white; padding: 40px 20px; text-align: center; border-bottom: 5px solid var(--fcp-red); }
+.view-content { padding: 20px; flex-grow: 1; }
+.widget-card { background: var(--card-bg); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.8); }
+.widget-title { font-size: 0.7rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+.rank-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+.rank-num { font-weight: 800; font-size: 0.7rem; background: #f1f5f9; padding: 4px 8px; border-radius: 4px; width: 15px; text-align: center; }
+.btn-main { background: var(--fcp-red); color: white; padding: 22px; border: none; border-radius: 20px; font-weight: 800; width: 100%; cursor: pointer; margin-bottom: 15px; font-size: 1rem; }
+.temp-val { font-size: 1.8rem; font-weight: 900; color: var(--rfep-blue); }
+footer { background: #0f172a; color: #64748b; padding: 30px; text-align: center; font-size: 0.75rem; }
