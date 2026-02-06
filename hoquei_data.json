@@ -1,13 +1,79 @@
 {
-    "ultima_actualizacion": "07/02/2026",
+    "ultima_actualizacion": "06/02/2026 23:18",
     "reglamento_url": "https://fep.es/federacion/reglamentos",
     "equipos": [
-        {"n": "CP Sant Cugat", "pts": 25, "reg": "CAT", "ok": true, "cats": ["OK Lliga Plata", "Femení", "Base"]},
-        {"n": "CH Caldes Recam Làser", "pts": 22, "reg": "CAT", "ok": true, "cats": ["OK Lliga", "Juvenil", "Infantil"]},
-        {"n": "CP Vic", "pts": 20, "reg": "CAT", "ok": true, "cats": ["OK Lliga Plata", "Junior", "Aleví"]},
-        {"n": "CP Manlleu", "pts": 18, "reg": "CAT", "ok": true, "cats": ["OK Lliga Femenina", "Base"]},
-        {"n": "Igualada Rigat HC", "pts": 15, "reg": "CAT", "ok": true, "cats": ["OK Lliga", "Veterans"]},
-        {"n": "Deportivo Liceo", "pts": 30, "reg": "ESP", "ok": true, "cats": ["OK Lliga", "Base Galícia"]},
-        {"n": "PAS Alcoi", "pts": 12, "reg": "ESP", "ok": true, "cats": ["OK Lliga", "Comunitat Valenciana"]}
+        {
+            "n": "CP Sant Cugat",
+            "pts": 25,
+            "reg": "CAT",
+            "ok": true,
+            "cats": [
+                "OK Lliga Plata",
+                "Femení",
+                "Base"
+            ]
+        },
+        {
+            "n": "CH Caldes Recam Làser",
+            "pts": 22,
+            "reg": "CAT",
+            "ok": true,
+            "cats": [
+                "OK Lliga",
+                "Juvenil",
+                "Infantil"
+            ]
+        },
+        {
+            "n": "CP Vic",
+            "pts": 20,
+            "reg": "CAT",
+            "ok": true,
+            "cats": [
+                "OK Lliga Plata",
+                "Junior",
+                "Aleví"
+            ]
+        },
+        {
+            "n": "CP Manlleu",
+            "pts": 18,
+            "reg": "CAT",
+            "ok": true,
+            "cats": [
+                "OK Lliga Femenina",
+                "Base"
+            ]
+        },
+        {
+            "n": "Igualada Rigat HC",
+            "pts": 15,
+            "reg": "CAT",
+            "ok": true,
+            "cats": [
+                "OK Lliga",
+                "Veterans"
+            ]
+        },
+        {
+            "n": "Deportivo Liceo",
+            "pts": 30,
+            "reg": "ESP",
+            "ok": true,
+            "cats": [
+                "OK Lliga",
+                "Base Galícia"
+            ]
+        },
+        {
+            "n": "PAS Alcoi",
+            "pts": 12,
+            "reg": "ESP",
+            "ok": true,
+            "cats": [
+                "OK Lliga",
+                "Comunitat Valenciana"
+            ]
+        }
     ]
 }
