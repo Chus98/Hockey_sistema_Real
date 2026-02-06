@@ -14,8 +14,10 @@
         .label { font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px; }
         .temp-display { font-size: 2.5rem; font-weight: 900; color: var(--blue); display: flex; align-items: center; justify-content: space-between; }
         .btn-main { background: var(--red); color: white; padding: 22px; border: none; border-radius: 18px; width: 100%; font-weight: 800; margin-bottom: 12px; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.2s; }
-        .row { background: white; padding: 18px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--blue); font-weight: bold; cursor: pointer; }
-        .rank-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-weight: bold; }
+        .btn-main:active { transform: scale(0.98); opacity: 0.9; }
+        .row { background: white; padding: 18px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--blue); font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .row:active { background: #e2e8f0; }
+        .rank-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-weight: bold; cursor: pointer; }
         .live-tag { color: #10b981; font-size: 0.7rem; font-weight: bold; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         footer { background: #001e3c; color: #64748b; padding: 30px; text-align: center; font-size: 0.75rem; }
@@ -25,7 +27,7 @@
 <div class="app">
     <header>
         <h1 style="margin:0; font-size: 2.3rem; letter-spacing: -1.5px;">JLS HOQUEI</h1>
-        <div id="status-tag" style="font-size:0.7rem; font-weight:700; margin-top:5px; opacity:0.9;">CONNECTANT...</div>
+        <div id="status-tag" style="font-size:0.7rem; font-weight:700; margin-top:5px; opacity:0.9;">SINCRO REAL ACTIVA ✅</div>
     </header>
     
     <div id="main-content" class="p-20">
@@ -42,10 +44,11 @@ let realData = [];
 
 async function loadData() {
     try {
-        // Forzamos carga fresca con Date.now()
+        // Cargamos los datos del robot
         const response = await fetch('hoquei_data.json?v=' + Date.now());
-        realData = await response.json();
-        document.getElementById('status-tag').innerText = "SINCRO REAL ACTIVA ✅";
+        const json = await response.json();
+        // El robot guarda los equipos en la clave "equipos"
+        realData = json.equipos || json; 
         showHome();
     } catch (e) {
         document.getElementById('status-tag').innerText = "ERROR DE CONEXIÓ ❌";
@@ -53,12 +56,13 @@ async function loadData() {
 }
 
 function showHome() {
-    // Filtramos unos cuantos equipos para la portada (los que tienen "ok": true)
-    let destacados = realData.filter(e => e.ok).slice(0, 5);
-    let classHtml = destacados.map((c, i) => `
-        <div class="rank-item">
+    // CLASSIFICACIÓ REAL: Ordenamos por puntos (pts) de mayor a menor
+    let classificacio = [...realData].sort((a, b) => (b.pts || 0) - (a.pts || 0)).slice(0, 5);
+    
+    let classHtml = classificacio.map((c, i) => `
+        <div class="rank-item" onclick="verCategorias('${c.n}')">
             <span>${i+1}. ${c.n}</span>
-            <span style="color:var(--red)">TOP</span>
+            <span style="color:var(--red)">${c.pts || 0} PTS</span>
         </div>
     `).join('');
 
@@ -71,8 +75,9 @@ function showHome() {
             </div>
         </div>
         <div class="widget">
-            <span class="label">🏆 EQUIPS DESTACATS</span>
-            ${classHtml}
+            <span class="label">🏆 CLASSIFICACIÓ REAL</span>
+            ${classHtml || '<p>Sense dades de competició</p>'}
+            <small style="color:#94a3b8; font-size:0.6rem; display:block; margin-top:10px;">*Prem un equip per veure detalls</small>
         </div>
         <button class="btn-main" onclick="showList('CAT')">CATALUNYA</button>
         <button class="btn-main" style="background:var(--blue)" onclick="showList('ESP')">ESPANYA</button>
@@ -81,14 +86,13 @@ function showHome() {
 }
 
 function showList(r) {
-    // Filtramos por región (CAT o ESP/FSP)
     let filtered = realData.filter(c => r === 'CAT' ? c.reg === 'CAT' : c.reg !== 'CAT');
     
     let list = filtered.sort((a,b) => a.n.localeCompare(b.n)).map(c => `
-        <div class="row">
+        <div class="row" onclick="verCategorias('${c.n}')">
             <div style="display:flex; flex-direction:column;">
                 <span style="font-size:0.9rem;">${c.n.toUpperCase()}</span>
-                <small style="font-size:0.65rem; color:#64748b; font-weight:normal;">${c.cats.join(' / ')}</small>
+                <small style="font-size:0.6rem; color:#64748b;">Prem per veure categories</small>
             </div>
             ${c.ok ? '<span style="color:var(--gold); font-size:1.2rem;">🏆</span>' : '<span style="color:#cbd5e1;">❯</span>'}
         </div>
@@ -101,14 +105,22 @@ function showList(r) {
     `;
 }
 
+// FUNCIÓ PER VEURE CATEGORIES AL PULSAR
+function verCategorias(nombreEquipo) {
+    const equipo = realData.find(e => e.n === nombreEquipo);
+    if (equipo) {
+        alert(`📌 CLUB: ${equipo.n}\n\n📂 CATEGORIES:\n• ${equipo.cats.join('\n• ')}`);
+    }
+}
+
 async function updateWeather() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (p) => {
-            const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}&current_weather=true`);
-            const data = await res.json();
-            document.getElementById('temp-val').innerText = Math.round(data.current_weather.temperature) + "°C";
-        }, () => {
-            document.getElementById('temp-val').innerText = "22°C"; // Temp por defecto si no hay GPS
+            try {
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}&current_weather=true`);
+                const data = await res.json();
+                document.getElementById('temp-val').innerText = Math.round(data.current_weather.temperature) + "°C";
+            } catch(e) { document.getElementById('temp-val').innerText = "18°C"; }
         });
     }
 }
