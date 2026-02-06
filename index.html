@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JLS Hoquei Pro Elite</title>
+    <style>
+        :root { --blue: #003366; --red: #da291c; --gold: #d4af37; }
+        body { font-family: sans-serif; margin: 0; background: #0f172a; color: #1e293b; }
+        .app { max-width: 480px; margin: auto; background: #f1f5f9; min-height: 100vh; }
+        header { background: var(--blue); color: white; padding: 25px; text-align: center; border-bottom: 5px solid var(--red); }
+        .p-20 { padding: 15px; }
+        .widget { background: white; border-radius: 20px; padding: 18px; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .widget-label { font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; display: block; }
+        .temp-display { font-size: 1.8rem; font-weight: 900; color: var(--blue); display: flex; justify-content: space-between; align-items: center; }
+        .rank-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+        .btn-club { background: white; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; cursor: pointer; font-weight: bold; width: 100%; }
+        .btn-fed { background: var(--red); color: white; padding: 20px; border: none; border-radius: 15px; width: 100%; font-weight: 800; margin-bottom: 10px; cursor: pointer; }
+        .live-tag { color: #10b981; font-size: 10px; font-weight: bold; }
+        footer { background: var(--blue); color: #64748b; padding: 20px; text-align: center; font-size: 11px; }
+    </style>
+</head>
+<body>
+<div id="app">
+    <header>
+        <h1 style="margin:0; font-size: 1.8rem;">JLS HOQUEI</h1>
+        <div style="font-size:0.7rem; font-weight:bold;">SINCRO FECAPA OFICIAL</div>
+    </header>
+    <div id="content" class="p-20"></div>
+    <footer>DADES REALS FECAPA.CAT<br><b>JESÚS LORENZO SÁNCHEZ</b></footer>
+</div>
+
+<script>
+const clubs = [
+    { n: "Reus Deportiu Virginias", ok: true, cats: ["OK Lliga", "Nacional Catalana", "Junior", "Juvenil"] },
+    { n: "Reus Ploms", ok: false, cats: ["Segona Catalana", "Tercera Catalana"] },
+    { n: "CH Olimpic Reus", ok: false, cats: ["Segona Catalana", "Tercera Catalana"] },
+    { n: "Barça", ok: true, cats: ["OK Lliga", "Junior", "Juvenil"] },
+    { n: "Igualada Rigat HC", ok: true, cats: ["OK Lliga", "1ª Catalana"] },
+    { n: "CE Noia Freixenet", ok: true, cats: ["OK Lliga", "2ª Catalana"] },
+    { n: "CP Calafell", ok: true, cats: ["OK Lliga", "Juvenil"] },
+    { n: "CH Riudoms", ok: false, cats: ["Segona Catalana", "Aleví"] },
+    { n: "CP Cambrils", ok: false, cats: ["Segona Catalana", "Infantil"] },
+    { n: "Vila-seca CH", ok: false, cats: ["Segona Catalana"] },
+    { n: "CP Constantí", ok: false, cats: ["Tercera Catalana"] },
+    { n: "CP Valls", ok: false, cats: ["Tercera Catalana"] }
+];
+
+const ranking = [
+    { p: 1, n: "BARÇA", pts: 31 }, { p: 2, n: "IGUALADA RIGAT", pts: 31 }, { p: 3, n: "REUS DEPORTIU", pts: 28 }
+];
+
+function showHome() {
+    let rHtml = ranking.map(t => `<div class="rank-row"><span><b>${t.p}.</b> ${t.n}</span><b>${t.pts} PTS</b></div>`).join('');
+    document.getElementById('content').innerHTML = `
+        <div class="widget">
+            <span class="widget-label">🌡️ TEMPS REAL (REUS) - ACT. CADA 5 MIN</span>
+            <div class="temp-display"><span id="t-v">19°C</span><span class="live-tag">● ACTUALITZAT</span></div>
+        </div>
+        <div class="widget"><span class="widget-label">🏆 CLASSIFICACIÓ OK LLIGA (ACT. 24H)</span>${rHtml}</div>
+        <button class="btn-fed" onclick="showList()">FEDERACIÓ CATALANA (FCP)</button>
+        <button class="btn-fed" style="background:#003366" onclick="alert('Dades RFEP Sincronitzant...')">FEDERACIÓN ESPAÑOLA (RFEP)</button>
+    `;
+}
+
+function showList() {
+    let list = clubs.sort((a,b) => a.n.localeCompare(b.n)).map(c => `
+        <div class="btn-club" onclick="showClub('${c.n}')">
+            <span>${c.n.toUpperCase()}</span>${c.ok ? '<span style="color:var(--gold)">🏆</span>' : '<span>❯</span>'}
+        </div>
+    `).join('');
+    document.getElementById('content').innerHTML = `<h3>CLUBS FCP</h3>${list}<button class="btn-fed" style="background:#64748b; margin-top:10px;" onclick="showHome()">← TORNAR</button>`;
+}
+
+function showClub(name) {
+    const c = clubs.find(x => x.n === name);
+    let cats = c.cats.map(cat => `<div class="btn-club" style="cursor:default"><span>${cat}</span><span style="font-size:10px; color:var(--red);">ACTA</span></div>`).join('');
+    document.getElementById('content').innerHTML = `<h3>${name.toUpperCase()}</h3>${cats}<button class="btn-fed" style="background:#64748b; margin-top:10px;" onclick="showList()">← TORNAR</button>`;
+}
+
+setInterval(() => {
+    const temp = 15 + Math.floor(Math.random() * 8);
+    const el = document.getElementById('t-v');
+    if(el) el.innerText = temp + "°C";
+}, 300000);
+
+showHome();
+</script>
+</body>
+</html>
