@@ -1,46 +1,46 @@
+import json
 import requests
 from bs4 import BeautifulSoup
-import json
 from datetime import datetime
 
-def obtener_datos_oficiales():
-    url = "https://www.hockeypatines.fep.es/league/3150"
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+def sincronizar():
+    archivo = 'hoquei_data.json'
     
-    equipos_reales = []
+    # 1. Cargamos tus datos actuales para no perderlos
     try:
-        response = requests.get(url, headers=headers, timeout=15)
-        soup = BeautifulSoup(response.text, 'html.parser')
+        with open(archivo, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except:
+        return # Si hay error no hacemos nada para no borrar
+
+    # 2. Intentamos pillar la clasificación real
+    try:
+        url = "https://www.hockeypatines.fep.es/league/3150"
+        res = requests.get(url, timeout=10)
+        soup = BeautifulSoup(res.text, 'html.parser')
         tabla = soup.find('table')
         
         if tabla:
-            filas = tabla.find_all('tr')[1:] # Saltamos la cabecera
+            filas = tabla.find_all('tr')[1:]
             for fila in filas:
                 cols = fila.find_all('td')
                 if len(cols) >= 10:
-                    nombre = cols[1].get_text(strip=True)
-                    pts = cols[9].get_text(strip=True)
+                    nombre_fep = cols[1].get_text(strip=True)
+                    puntos_fep = int(cols[9].get_text(strip=True))
                     
-                    equipos_reales.append({
-                        "n": nombre,
-                        "pts": int(pts) if pts.isdigit() else 0,
-                        "reg": "ESP",
-                        "ok": True,
-                        "cats": ["OK LLIGA 25/26"]
-                    })
-        return equipos_reales
+                    # Actualizamos puntos solo si el equipo ya está en nuestra lista
+                    for equipo in data['equipos']:
+                        if nombre_fep.lower() in equipo['n'].lower():
+                            equipo['pts'] = puntos_fep
+        
+        data['ultima_actualizacion'] = datetime.now().strftime("%d/%m/%Y %H:%M")
+        
+        # 3. Guardamos sin borrar categorías
+        with open(archivo, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+            
     except Exception as e:
-        print(f"Error: {e}")
-        return []
+        print(f"Error sincronització: {e}")
 
-# Generamos el archivo final
-datos_fep = obtener_datos_oficiales()
-resultado = {
-    "ultima_actualizacion": datetime.now().strftime("%d/%m/%Y %H:%M"),
-    "equipos": datos_fep,
-    "reglamento_url": "https://fep.es/federacion/reglamentos"
-}
-
-with open('hoquei_data.json', 'w', encoding='utf-8') as f:
-    json.dump(resultado, f, ensure_ascii=False, indent=4)
-print("✅ Sincronización finalizada con éxito")
+if __name__ == "__main__":
+    sincronizar()
