@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 
 # ==========================================
-# ⚙️ CONFIGURACIÓN DE LIGAS (Fuentes Oficiales)
+# ⚙️ CONFIGURACIÓN DE LIGAS (Actualizada)
 # ==========================================
 LIGAS = [
     {"url": "https://www.hockeypatines.fep.es/league/3150", "cat": "OK LLIGA", "region": "ESP", "es_ok": True},
@@ -13,15 +13,12 @@ LIGAS = [
     {"url": "https://www.hockeypatines.fep.es/league/3159", "cat": "OK LLIGA PLATA SUD", "region": "ESP", "es_ok": False},
     {"url": "http://www.fcpatinatge.cat/ca/competicio/hoquei-patins/nacional-catalana-masculina/classificacio", "cat": "NACIONAL CATALANA", "region": "CAT", "es_ok": False},
     {"url": "http://www.fcpatinatge.cat/ca/competicio/hoquei-patins/1a-catalana-masculina/classificacio", "cat": "1ª CATALANA", "region": "CAT", "es_ok": False},
+    # Añadimos la liga del Reus Olímpic para que lo detecte automático
+    {"url": "http://www.fcpatinatge.cat/ca/competicio/hoquei-patins/2a-catalana-masculina-grup-b/classificacio", "cat": "2ª CATALANA", "region": "CAT", "es_ok": False}
 ]
 
 CLUBES_SIN_BASE = ["CN REUS PLOMS"]
-
 CATEGORIAS_BASE = ["Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]
-
-# ==========================================
-# 🚀 MOTOR DEL SCRIPT
-# ==========================================
 
 def normalizar_nombre(nombre):
     nombre = nombre.upper().strip()
@@ -45,7 +42,7 @@ def asignar_cantera_completa(nombre_club, cats_actuales):
 
 def sincronizar_todo():
     print(f"🚀 INICIANDO ACTUALIZACIÓN TOTAL ({datetime.now().strftime('%H:%M:%S')})")
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+    headers = {'User-Agent': 'Mozilla/5.0'}
     
     try:
         with open('hoquei_data.json', 'r', encoding='utf-8') as f:
@@ -65,7 +62,6 @@ def sincronizar_todo():
             for fila in filas:
                 cols = fila.find_all('td')
                 if not cols: continue
-                
                 textos = [c.get_text(strip=True) for c in cols]
                 nombre_raw = ""
                 puntos = 0
@@ -112,7 +108,6 @@ def sincronizar_todo():
     
     with open('hoquei_data.json', 'w', encoding='utf-8') as f:
         json.dump(datos, f, ensure_ascii=False, indent=4)
-        
     print(f"\n✅ FINALIZADO. Equipos actualizados: {len(lista_final)}")
 
 if __name__ == "__main__":
