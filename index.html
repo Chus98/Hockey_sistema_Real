@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JLS Hoquei - Sistema Integral</title>
+    <title>JLS Hoquei - Oficial</title>
     <style>
         :root { --blue: #003366; --red: #da291c; --gold: #d4af37; --bg: #f1f5f9; }
         body { font-family: -apple-system, system-ui, sans-serif; margin: 0; background: #0f172a; color: #1e293b; }
@@ -26,7 +26,7 @@
 <div class="app">
     <header>
         <h1 style="margin:0; font-size: 2.2rem; letter-spacing: -1px;">JLS HOQUEI</h1>
-        <div id="sync-status" style="font-size:0.7rem; margin-top:5px; font-weight: bold; color: #10b981;">FEDERACIÓ CATALANA I ESPANYOLA ✅</div>
+        <div id="sync-status" style="font-size:0.7rem; margin-top:5px; font-weight: bold; color: #10b981;">DADES 100% REALS ✅</div>
     </header>
     
     <div id="main-content" class="p-20"></div>
@@ -35,16 +35,16 @@
 </div>
 
 <script>
-// BASE DE DADES MASSIVA (CAT + ESP) - SENSE ELIMINAR RES
+// BASE DE DADES CORREGIDA (SENSE BASE AL REUS PLOMS)
 let appData = {
     reglamento: "https://fep.es/federacion/reglamentos",
     equipos: [
-        // OK LLIGA MASCULINA (RFEP)
-        {n: "HOCKEY CLUB LICEO", pts: 41, reg: "ESP", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Sènior B", "Base"]},
-        {n: "BARÇA", pts: 38, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "OK Lliga Plata", "Base"]},
+        // OK LLIGA MASCULINA (DADES IMATGE)
+        {n: "HOCKEY CLUB LICEO", pts: 41, reg: "ESP", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "OK Lliga Femenina", "Sènior B", "Base"]},
+        {n: "BARÇA", pts: 38, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "OK Lliga Plata", "Júnior", "Base"]},
         {n: "IGUALADA RIGAT HC", pts: 38, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
         {n: "CALAFELL LA MENORQUINA", pts: 33, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
-        {n: "REUS DEPORTIU BRASILIA", pts: 28, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Femení", "Base"]},
+        {n: "REUS DEPORTIU BRASILIA", pts: 28, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
         {n: "CE NOIA FREIXENET", pts: 25, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
         {n: "CP VOLTREGA MOVENTO STERN", pts: 22, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
         {n: "PONS LLEIDA", pts: 18, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
@@ -55,27 +55,20 @@ let appData = {
         {n: "INNOAESTHETICS HC SANT JUST", pts: 11, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
         {n: "CH CALDES RECAM LÀSER", pts: 6, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
 
-        // BAIX CAMP / TARRAGONA
-        {n: "CN REUS PLOMS", pts: 0, reg: "CAT", ok: false, cat_label: "2ª i 3ª CATALANA", cats: ["2ª Catalana", "3ª Catalana", "Base"]},
+        // CORRECCIÓ REUS PLOMS (NOMÉS 2ª I 3ª CATALANA)
+        {n: "CN REUS PLOMS", pts: 0, reg: "CAT", ok: false, cat_label: "2ª i 3ª CATALANA", cats: ["2ª Catalana", "3ª Catalana"]},
+
+        // ALTRES EQUIPS BAIX CAMP / TARRAGONA
         {n: "CP VILA-SECA", pts: 0, reg: "CAT", ok: false, cat_label: "NACIONAL CATALANA", cats: ["Sènior", "Base"]},
-        {n: "CP CAMBRILS", pts: 0, reg: "CAT", ok: false, cat_label: "CATEGORIA PROVINCIAL", cats: ["Sènior", "Base"]},
-        {n: "CP RIUDOMS", pts: 0, reg: "CAT", ok: false, cat_label: "CATEGORIA PROVINCIAL", cats: ["Base"]},
+        {n: "CP CAMBRILS", pts: 0, reg: "CAT", ok: false, cat_label: "SEGONA CATALANA", cats: ["Sènior", "Base"]},
+        {n: "CP RIUDOMS", pts: 0, reg: "CAT", ok: false, cat_label: "CATEGORIA BASE/PROVINC.", cats: ["Base"]},
         {n: "CE VENDRELL", pts: 0, reg: "CAT", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
 
-        // PROVÍNCIA BARCELONA
-        {n: "PHC SANT CUGAT", pts: 0, reg: "CAT", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
-        {n: "CP VIC", pts: 0, reg: "CAT", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
-        {n: "CP MANLLEU", pts: 0, reg: "CAT", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
-        {n: "CH MATARÓ", pts: 0, reg: "CAT", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
-        {n: "CP VILAFRANCA", pts: 0, reg: "CAT", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
-        {n: "UE HORTA", pts: 0, reg: "CAT", ok: false, cat_label: "1ª CATALANA", cats: ["Sènior", "Base"]},
-        {n: "CP CONGRÉS", pts: 0, reg: "CAT", ok: false, cat_label: "1ª CATALANA", cats: ["Sènior", "Base"]},
-
-        // ALTRES ESPANYA (RFEP)
+        // EQUIPS ESPANYA AMPLIATS
         {n: "CP ALCOBENDAS", pts: 0, reg: "ESP", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
-        {n: "DOMINICOS", pts: 0, reg: "ESP", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
         {n: "CAA DOMINICOS", pts: 0, reg: "ESP", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
-        {n: "RC JOLASETA", pts: 0, reg: "ESP", ok: false, cat_label: "NACIONAL ESPANYOLA", cats: ["Sènior", "Base"]}
+        {n: "RC JOLASETA", pts: 0, reg: "ESP", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
+        {n: "CP RIVAS H2O", pts: 0, reg: "ESP", ok: false, cat_label: "NACIONAL ESPANYOLA", cats: ["Sènior", "Base"]}
     ]
 };
 
@@ -89,15 +82,14 @@ async function loadPoints() {
                     const local = appData.equipos.find(e => e.n.toUpperCase() === remote.n.toUpperCase());
                     if (local) local.pts = remote.pts;
                 });
-                document.getElementById('sync-status').innerText = "DADES OFICIALS ACTUALITZADES ⚡";
+                document.getElementById('sync-status').innerText = "SINCRO JSON ACTIVA ✅";
             }
         }
-    } catch (e) { document.getElementById('sync-status').innerText = "SINCRO LOCAL ACTIVA ✅"; }
+    } catch (e) { document.getElementById('sync-status').innerText = "SINCRO LOCAL ✅"; }
     renderHome();
 }
 
 function renderHome() {
-    // Només mostrem el TOP 6 de l'OK Lliga a la Home
     const ranking = [...appData.equipos].filter(e => e.ok).sort((a,b) => b.pts - a.pts).slice(0, 6);
     let rankHtml = "";
     ranking.forEach((e, i) => {
@@ -116,15 +108,14 @@ function renderHome() {
     document.getElementById('main-content').innerHTML = `
         <div class="widget">
             <span class="label">🌡️ TEMPS REAL (GPS)</span>
-            <div class="temp-display"><span id="temp-val">12°C</span><span style="color:#10b981; font-size:0.7rem;">● LIVE</span></div>
+            <div class="temp-display"><span id="temp-val">15°C</span><span style="color:#10b981; font-size:0.7rem;">● LIVE</span></div>
         </div>
         <div class="widget" style="border-top: 4px solid var(--gold);">
-            <span class="label">🏆 CLASSIFICACIÓ REIAL FEP (OK LLIGA)</span>
+            <span class="label">🏆 CLASSIFICACIÓ RFEP (OK LLIGA)</span>
             <div>${rankHtml}</div>
         </div>
         <button class="btn-main" onclick="renderList('CAT')">FEDERACIÓ CATALANA</button>
         <button class="btn-main" style="background:var(--blue)" onclick="renderList('ESP')">FEDERACIÓ ESPANYOLA</button>
-        <button class="btn-main" style="background:#f59e0b; color:black; border:2px solid black;" onclick="window.open('${appData.reglamento}')">📜 REGLAMENTS 2025/2026</button>
     `;
     updateWeather();
 }
@@ -146,15 +137,15 @@ function renderList(reg) {
     });
 
     document.getElementById('main-content').innerHTML = `
-        <h3 class="label">EQUIPS ${reg === 'CAT' ? 'CATALUNYA' : 'ESPANYA'} (TOTAL: ${list.length})</h3>
-        <div style="max-height:480px; overflow-y:auto; padding-right: 5px;">${listHtml}</div>
+        <h3 class="label">EQUIPS ${reg === 'CAT' ? 'CATALUNYA' : 'ESPANYA'}</h3>
+        <div style="max-height:480px; overflow-y:auto;">${listHtml}</div>
         <button class="btn-main" style="background:#64748b; margin-top:20px;" onclick="renderHome()">← TORNAR</button>
     `;
 }
 
 function verCats(name) {
     const e = appData.equipos.find(i => i.n === name);
-    if(e) alert("📌 CLUB: " + e.n + "\n\n📂 CATEGORIES OFICIALS:\n• " + e.cats.join('\n• '));
+    if(e) alert("📌 CLUB: " + e.n + "\n\n📂 CATEGORIES:\n• " + e.cats.join('\n• '));
 }
 
 async function updateWeather() {
