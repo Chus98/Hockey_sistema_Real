@@ -54,6 +54,7 @@ async function loadPoints() {
 }
 
 function renderHome() {
+    // Separem els equips d'elit (OK LLIGA) per al rànquing superior
     const ranking = [...appData.equipos].filter(e => e.ok).sort((a,b) => b.pts - a.pts).slice(0, 6);
     let rankHtml = "";
     ranking.forEach((e, i) => {
