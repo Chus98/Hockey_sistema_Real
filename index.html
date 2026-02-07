@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>JLS Hoquei - Oficial</title>
     <style>
-        :root { --blue: #003366; --red: #da291c; --gold: #d4af37; --bg: #f1f5f9; }
+        :root { --blue: #003366; --red: #da291c; --gold: #d4af37; --bg: #f1f5f9; --green: #34a853; }
         body { font-family: -apple-system, system-ui, sans-serif; margin: 0; background: #0f172a; color: #1e293b; }
         .app { max-width: 480px; margin: auto; background: var(--bg); min-height: 100vh; display: flex; flex-direction: column; }
         header { background: linear-gradient(135deg, var(--blue), #001e3c); color: white; padding: 30px 20px; text-align: center; border-bottom: 5px solid var(--red); }
@@ -14,12 +14,15 @@
         .label { font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 1px; }
         .temp-display { font-size: 2.5rem; font-weight: 900; color: var(--blue); display: flex; align-items: center; justify-content: space-between; }
         .btn-main { background: var(--red); color: white; padding: 18px; border: none; border-radius: 18px; width: 100%; font-weight: 800; margin-bottom: 12px; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(218, 41, 28, 0.2); }
-        .rank-item { padding: 12px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
+        .rank-item { padding: 12px 0; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
         .row { background: white; padding: 18px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--blue); font-weight: bold; cursor: pointer; }
         footer { background: #001e3c; color: white; padding: 25px; text-align: center; font-size: 0.8rem; font-weight: bold; }
         .ok-badge { display: flex; align-items: center; margin-top: 4px; }
         .ok-text { font-size: 9px; font-weight: 900; color: var(--gold); margin-left: 5px; text-transform: uppercase; }
         .other-text { font-size: 9px; font-weight: 700; color: #64748b; margin-top: 4px; text-transform: uppercase; }
+        /* Estil per al botó de Mapa */
+        .map-btn { background: #e8f5e9; color: var(--green); border: none; padding: 8px 12px; border-radius: 12px; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
+        .map-btn:active { transform: scale(0.9); background: var(--green); color: white; }
     </style>
 </head>
 <body>
@@ -35,11 +38,8 @@
 </div>
 
 <script>
-// BASE DE DADES CORREGIDA (SENSE BASE AL REUS PLOMS)
 let appData = {
-    reglamento: "https://fep.es/federacion/reglamentos",
     equipos: [
-        // OK LLIGA MASCULINA (DADES IMATGE)
         {n: "HOCKEY CLUB LICEO", pts: 41, reg: "ESP", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "OK Lliga Femenina", "Sènior B", "Base"]},
         {n: "BARÇA", pts: 38, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "OK Lliga Plata", "Júnior", "Base"]},
         {n: "IGUALADA RIGAT HC", pts: 38, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
@@ -54,23 +54,23 @@ let appData = {
         {n: "SHUM FRIT RAVICH", pts: 12, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
         {n: "INNOAESTHETICS HC SANT JUST", pts: 11, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
         {n: "CH CALDES RECAM LÀSER", pts: 6, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
-
-        // CORRECCIÓ REUS PLOMS (NOMÉS 2ª I 3ª CATALANA)
         {n: "CN REUS PLOMS", pts: 0, reg: "CAT", ok: false, cat_label: "2ª i 3ª CATALANA", cats: ["2ª Catalana", "3ª Catalana"]},
-
-        // ALTRES EQUIPS BAIX CAMP / TARRAGONA
         {n: "CP VILA-SECA", pts: 0, reg: "CAT", ok: false, cat_label: "NACIONAL CATALANA", cats: ["Sènior", "Base"]},
         {n: "CP CAMBRILS", pts: 0, reg: "CAT", ok: false, cat_label: "SEGONA CATALANA", cats: ["Sènior", "Base"]},
         {n: "CP RIUDOMS", pts: 0, reg: "CAT", ok: false, cat_label: "CATEGORIA BASE/PROVINC.", cats: ["Base"]},
         {n: "CE VENDRELL", pts: 0, reg: "CAT", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
-
-        // EQUIPS ESPANYA AMPLIATS
         {n: "CP ALCOBENDAS", pts: 0, reg: "ESP", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
         {n: "CAA DOMINICOS", pts: 0, reg: "ESP", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
         {n: "RC JOLASETA", pts: 0, reg: "ESP", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
         {n: "CP RIVAS H2O", pts: 0, reg: "ESP", ok: false, cat_label: "NACIONAL ESPANYOLA", cats: ["Sènior", "Base"]}
     ]
 };
+
+// FUNCIÓ PER OBRIR GPS
+function anarAlMapa(nom) {
+    const query = encodeURIComponent(`Pavelló Hoquei Patins ${nom}`);
+    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+}
 
 async function loadPoints() {
     try {
@@ -80,7 +80,10 @@ async function loadPoints() {
             if (data.equipos) {
                 data.equipos.forEach(remote => {
                     const local = appData.equipos.find(e => e.n.toUpperCase() === remote.n.toUpperCase());
-                    if (local) local.pts = remote.pts;
+                    if (local) {
+                        local.pts = remote.pts;
+                        if(remote.cats) local.cats = remote.cats;
+                    }
                 });
                 document.getElementById('sync-status').innerText = "SINCRO JSON ACTIVA ✅";
             }
@@ -94,21 +97,24 @@ function renderHome() {
     let rankHtml = "";
     ranking.forEach((e, i) => {
         rankHtml += `
-            <div class="rank-item" onclick="verCats('${e.n}')">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-weight:800; font-size: 0.9rem;">${i+1}. ${e.n}</span>
-                    <span style="color:var(--red); font-weight:900;">${e.pts} PTS</span>
+            <div class="rank-item">
+                <div style="flex:1; cursor:pointer;" onclick="verCats('${e.n}')">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-weight:800; font-size: 0.9rem;">${i+1}. ${e.n}</span>
+                        <span style="color:var(--red); font-weight:900;">${e.pts} PTS</span>
+                    </div>
+                    <div class="ok-badge">
+                        <span>🏆</span><span class="ok-text">OK LLIGA MASCULINA</span>
+                    </div>
                 </div>
-                <div class="ok-badge">
-                    <span>🏆</span><span class="ok-text">OK LLIGA MASCULINA</span>
-                </div>
+                <button class="map-btn" onclick="anarAlMapa('${e.n}')">📍</button>
             </div>`;
     });
 
     document.getElementById('main-content').innerHTML = `
         <div class="widget">
             <span class="label">🌡️ TEMPS REAL (GPS)</span>
-            <div class="temp-display"><span id="temp-val">15°C</span><span style="color:#10b981; font-size:0.7rem;">● LIVE</span></div>
+            <div class="temp-display"><span id="temp-val">--°C</span><span style="color:#10b981; font-size:0.7rem;">● LIVE</span></div>
         </div>
         <div class="widget" style="border-top: 4px solid var(--gold);">
             <span class="label">🏆 CLASSIFICACIÓ RFEP (OK LLIGA)</span>
@@ -125,14 +131,14 @@ function renderList(reg) {
     let listHtml = "";
     list.forEach(e => {
         listHtml += `
-            <div class="row" onclick="verCats('${e.n}')">
-                <div>
+            <div class="row">
+                <div style="flex:1;" onclick="verCats('${e.n}')">
                     <div style="font-size:0.85rem;">${e.n}</div>
                     ${e.ok ? 
                         '<div class="ok-badge"><span>🏆</span><span class="ok-text">OK LLIGA</span></div>' : 
-                        `<div class="other-text">📍 ${e.cat_label}</div>`}
+                        `<div class="other-text">⚙️ ${e.cat_label}</div>`}
                 </div>
-                <span>❯</span>
+                <button class="map-btn" onclick="anarAlMapa('${e.n}')">📍</button>
             </div>`;
     });
 
@@ -159,7 +165,6 @@ async function updateWeather() {
         });
     }
 }
-
 loadPoints();
 </script>
 </body>
