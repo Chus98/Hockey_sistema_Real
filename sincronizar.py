@@ -5,8 +5,10 @@ import time
 from datetime import datetime
 
 # ==========================================
-# ⚙️ CONFIGURACIÓN DE LIGAS
+# ⚙️ CONFIGURACIÓ DE TEMPS I LLIGUES
 # ==========================================
+TIEMPO_ESPERA = 300  # Actualització cada 5 minuts
+
 LIGAS = [
     {"url": "https://www.hockeypatines.fep.es/league/3150", "cat": "OK LLIGA", "region": "ESP", "es_ok": True},
     {"url": "https://www.hockeypatines.fep.es/league/3158", "cat": "OK LLIGA PLATA NORD", "region": "ESP", "es_ok": False},
@@ -38,7 +40,7 @@ def asignar_cantera_completa(nombre_club, cats_actuales):
     return cats_actuales
 
 def sincronizar_todo():
-    print(f"🚀 INICIANDO ACTUALIZACIÓN TOTAL CON EMBLEMAS ({datetime.now().strftime('%H:%M:%S')})")
+    print(f"\n🔄 [{datetime.now().strftime('%H:%M:%S')}] INICIANT ACTUALITZACIÓN...")
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
     
     try:
@@ -51,58 +53,39 @@ def sincronizar_todo():
     
     for liga in LIGAS:
         try:
-            print(f"📡 Escaneando: {liga['cat']}...")
             r = requests.get(liga['url'], headers=headers, timeout=15)
             soup = BeautifulSoup(r.text, 'html.parser')
-            
-            # Buscamos las filas de la tabla
             filas = soup.find_all('tr')
             
             for fila in filas:
                 cols = fila.find_all('td')
                 if len(cols) < 3: continue
                 
-                # --- EXTRACCIÓN DEL EMBLEMA ---
+                # --- EMBLEMA ---
                 img_tag = fila.find('img')
                 url_emblema = ""
                 if img_tag and img_tag.get('src'):
                     url_emblema = img_tag['src']
-                    # Completar URL si es relativa
                     if url_emblema.startswith('/'):
                         base = "https://www.hockeypatines.fep.es" if "fep.es" in liga['url'] else "http://www.fcpatinatge.cat"
                         url_emblema = base + url_emblema
                 
-                # --- EXTRACCIÓN DE TEXTOS ---
+                # --- DADES ---
                 textos = [c.get_text(strip=True) for c in cols]
-                nombre_raw = ""
-                puntos = 0
-                
-                # Identificar nombre (texto largo no numérico)
-                for t in textos:
-                    if len(t) > 3 and not t.replace('.','').isdigit():
-                        nombre_raw = t
-                        break
-                
-                # Identificar puntos (último número de la fila)
-                for t in reversed(textos):
-                    if t.isdigit():
-                        puntos = int(t)
-                        break
+                nombre_raw = next((t for t in textos if len(t) > 3 and not t.replace('.','').isdigit()), "")
+                puntos = next((int(t) for t in reversed(textos) if t.isdigit()), 0)
                 
                 if not nombre_raw: continue
                 nombre = normalizar_nombre(nombre_raw)
                 
-                # Crear o actualizar equipo
                 if nombre not in equipos_map:
                     equipos_map[nombre] = {
                         "n": nombre, "pts": 0, "reg": liga['region'],
-                        "ok": False, "cat_label": liga['cat'], "cats": [],
-                        "img": url_emblema # Nueva propiedad para el logo
+                        "ok": False, "cat_label": liga['cat'], "cats": [], "img": ""
                     }
                 
                 e = equipos_map[nombre]
                 e['pts'] = puntos
-                # Actualizar logo solo si lo encontramos
                 if url_emblema: e['img'] = url_emblema
                 
                 if liga['es_ok']: 
@@ -115,7 +98,7 @@ def sincronizar_todo():
         except Exception as ex:
             print(f"⚠️ Error en {liga['cat']}: {ex}")
 
-    # Procesar canteras y limpiar
+    # Neteja i ordenació
     lista_final = []
     for nombre, equipo in equipos_map.items():
         equipo['cats'] = asignar_cantera_completa(nombre, equipo['cats'])
@@ -128,7 +111,13 @@ def sincronizar_todo():
     with open('hoquei_data.json', 'w', encoding='utf-8') as f:
         json.dump(datos, f, ensure_ascii=False, indent=4)
         
-    print(f"\n✅ FINALIZADO. Equipos con emblemas actualizados: {len(lista_final)}")
+    print(f"✅ SINCRO OK. Pròxima revisió en 5 min.")
 
+# ==========================================
+# 🚀 BUCLE INFINIT
+# ==========================================
 if __name__ == "__main__":
-    sincronizar_todo()
+    print("🤖 MOTOR JLS HOQUEI EN MARXA")
+    while True:
+        sincronizar_todo()
+        time.sleep(TIEMPO_ESPERA)
