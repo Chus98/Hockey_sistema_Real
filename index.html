@@ -14,14 +14,11 @@
         .label { font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 1px; }
         .temp-display { font-size: 2.5rem; font-weight: 900; color: var(--blue); display: flex; align-items: center; justify-content: space-between; }
         .btn-main { background: var(--red); color: white; padding: 18px; border: none; border-radius: 18px; width: 100%; font-weight: 800; margin-bottom: 12px; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(218, 41, 28, 0.2); }
-        /* Estils per als ítems de la llista */
         .rank-item { padding: 12px 0; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
         .row { background: white; padding: 18px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--blue); font-weight: bold; }
         footer { background: #001e3c; color: white; padding: 25px; text-align: center; font-size: 0.8rem; font-weight: bold; }
-        .ok-badge { display: flex; align-items: center; margin-top: 4px; }
-        .ok-text { font-size: 9px; font-weight: 900; color: var(--gold); margin-left: 5px; text-transform: uppercase; }
+        .ok-text { font-size: 9px; font-weight: 900; color: var(--gold); text-transform: uppercase; }
         .other-text { font-size: 9px; font-weight: 700; color: #64748b; margin-top: 4px; text-transform: uppercase; }
-        /* Botó de Mapa Professional */
         .map-btn { background: #e8f5e9; color: var(--green); border: none; padding: 10px; border-radius: 12px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: 0.3s; margin-left: 10px; }
         .map-btn:active { transform: scale(0.9); background: var(--green); color: white; }
     </style>
@@ -41,7 +38,6 @@
 <script>
 let appData = { equipos: [] };
 
-// FUNCIÓ GPS PROFESSIONAL
 function anarAlMapa(nom) {
     const query = encodeURIComponent(`Pavelló Hoquei Patins ${nom}`);
     window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
@@ -66,12 +62,12 @@ function renderHome() {
             <div class="rank-item">
                 <div style="flex:1; cursor:pointer;" onclick="verCats('${e.n}')">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-weight:800; font-size: 0.9rem;">${i+1}. ${e.n}</span>
+                        <span style="font-weight:800; font-size: 0.9rem;">
+                           <span style="color:var(--gold);">🏆</span> ${i+1}. ${e.n}
+                        </span>
                         <span style="color:var(--red); font-weight:900;">${e.pts} PTS</span>
                     </div>
-                    <div class="ok-badge">
-                        <span>🏆</span><span class="ok-text">OK LLIGA</span>
-                    </div>
+                    <div style="margin-top:4px;"><span class="ok-text" style="margin-left:22px;">OK LLIGA</span></div>
                 </div>
                 <button class="map-btn" onclick="anarAlMapa('${e.n}')">📍</button>
             </div>`;
@@ -99,8 +95,10 @@ function renderList(reg) {
         listHtml += `
             <div class="row">
                 <div style="flex:1; cursor:pointer;" onclick="verCats('${e.n}')">
-                    <div style="font-size:0.85rem;">${e.n}</div>
-                    <div class="other-text">⚙️ ${e.cat_label}</div>
+                    <div style="font-size:0.85rem;">
+                        ${e.ok ? '<span style="color:var(--gold);">🏆</span> ' : '• '} ${e.n}
+                    </div>
+                    <div class="other-text" style="margin-left:15px;">⚙️ ${e.cat_label}</div>
                 </div>
                 <button class="map-btn" onclick="anarAlMapa('${e.n}')">📍</button>
             </div>`;
