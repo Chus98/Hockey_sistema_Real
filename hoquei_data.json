@@ -1,20 +1,18 @@
 {
-  "ultima_actualizacion": "07/02/2026",
-  "reglamento_url": "https://fep.es/federacion/reglamentos",
   "equipos": [
-    {"n": "Barça", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "OK Lliga Plata", "Sènior B", "Júnior", "Juvenil", "Infantil", "Aleví"]},
-    {"n": "Noia Freixenet", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "Sènior B", "Base FECAPA"]},
-    {"n": "Reus Deportiu Virginias", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "Femení", "Base", "Escola"]},
-    {"n": "Deportivo Liceo", "pts": 0, "reg": "ESP", "cats": ["OK Lliga", "OK Lliga Femenina", "Base Galega"]},
-    {"n": "Voltregà Stern Motor", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "OK Lliga Femenina", "Base"]},
-    {"n": "Parlem Calafell", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "Sènior B", "Base"]},
-    {"n": "Igualada Rigat HC", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "Base", "Veterans"]},
-    {"n": "PAS Alcoi", "pts": 0, "reg": "ESP", "cats": ["OK Lliga", "Base FPCV"]},
-    {"n": "Recam Làser CH Caldes", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "Base"]},
-    {"n": "CP Vic", "pts": 0, "reg": "CAT", "cats": ["OK Lliga Plata", "Sènior B", "Base"]},
-    {"n": "CP Sant Cugat", "pts": 0, "reg": "CAT", "cats": ["OK Lliga Plata", "OK Lliga Femenina", "Base"]},
-    {"n": "CP Manlleu", "pts": 0, "reg": "CAT", "cats": ["OK Lliga Femenina", "OK Lliga Plata", "Base"]},
-    {"n": "Girona CH", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "Base"]},
-    {"n": "Finques Prats Lleida", "pts": 0, "reg": "CAT", "cats": ["OK Lliga", "Base"]}
+    {"n": "HOCKEY CLUB LICEO", "pts": 41},
+    {"n": "BARÇA", "pts": 38},
+    {"n": "IGUALADA RIGAT HC", "pts": 38},
+    {"n": "CALAFELL LA MENORQUINA", "pts": 33},
+    {"n": "REUS DEPORTIU BRASILIA", "pts": 28},
+    {"n": "CE NOIA FREIXENET", "pts": 25},
+    {"n": "CP VOLTREGA MOVENTO STERN", "pts": 22},
+    {"n": "PONS LLEIDA", "pts": 18},
+    {"n": "AITEX PAS ALCOI", "pts": 18},
+    {"n": "ADISS HOCKEY RIVAS", "pts": 16},
+    {"n": "CERDANYOLA CLUB D'HOQUEI", "pts": 13},
+    {"n": "SHUM FRIT RAVICH", "pts": 12},
+    {"n": "INNOAESTHETICS HC SANT JUST", "pts": 11},
+    {"n": "CH CALDES RECAM LÀSER", "pts": 6}
   ]
 }
