@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 
 # ==========================================
-# ⚙️ CONFIGURACIÓN DE LIGAS (Actualizada)
+# ⚙️ CONFIGURACIÓN DE LIGAS
 # ==========================================
 LIGAS = [
     {"url": "https://www.hockeypatines.fep.es/league/3150", "cat": "OK LLIGA", "region": "ESP", "es_ok": True},
@@ -13,7 +13,6 @@ LIGAS = [
     {"url": "https://www.hockeypatines.fep.es/league/3159", "cat": "OK LLIGA PLATA SUD", "region": "ESP", "es_ok": False},
     {"url": "http://www.fcpatinatge.cat/ca/competicio/hoquei-patins/nacional-catalana-masculina/classificacio", "cat": "NACIONAL CATALANA", "region": "CAT", "es_ok": False},
     {"url": "http://www.fcpatinatge.cat/ca/competicio/hoquei-patins/1a-catalana-masculina/classificacio", "cat": "1ª CATALANA", "region": "CAT", "es_ok": False},
-    # Añadimos la liga del Reus Olímpic para que lo detecte automático
     {"url": "http://www.fcpatinatge.cat/ca/competicio/hoquei-patins/2a-catalana-masculina-grup-b/classificacio", "cat": "2ª CATALANA", "region": "CAT", "es_ok": False}
 ]
 
@@ -33,16 +32,14 @@ def normalizar_nombre(nombre):
 
 def asignar_cantera_completa(nombre_club, cats_actuales):
     for excepcion in CLUBES_SIN_BASE:
-        if excepcion in nombre_club:
-            return cats_actuales
+        if excepcion in nombre_club: return cats_actuales
     for cat_base in CATEGORIAS_BASE:
-        if cat_base not in cats_actuales:
-            cats_actuales.append(cat_base)
+        if cat_base not in cats_actuales: cats_actuales.append(cat_base)
     return cats_actuales
 
 def sincronizar_todo():
-    print(f"🚀 INICIANDO ACTUALIZACIÓN TOTAL ({datetime.now().strftime('%H:%M:%S')})")
-    headers = {'User-Agent': 'Mozilla/5.0'}
+    print(f"🚀 INICIANDO ACTUALIZACIÓN TOTAL CON EMBLEMAS ({datetime.now().strftime('%H:%M:%S')})")
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
     
     try:
         with open('hoquei_data.json', 'r', encoding='utf-8') as f:
@@ -54,22 +51,39 @@ def sincronizar_todo():
     
     for liga in LIGAS:
         try:
-            print(f"📡 Escanejant: {liga['cat']}...")
-            r = requests.get(liga['url'], headers=headers, timeout=10)
+            print(f"📡 Escaneando: {liga['cat']}...")
+            r = requests.get(liga['url'], headers=headers, timeout=15)
             soup = BeautifulSoup(r.text, 'html.parser')
-            filas = soup.find_all('tr')[1:]
+            
+            # Buscamos las filas de la tabla
+            filas = soup.find_all('tr')
             
             for fila in filas:
                 cols = fila.find_all('td')
-                if not cols: continue
+                if len(cols) < 3: continue
+                
+                # --- EXTRACCIÓN DEL EMBLEMA ---
+                img_tag = fila.find('img')
+                url_emblema = ""
+                if img_tag and img_tag.get('src'):
+                    url_emblema = img_tag['src']
+                    # Completar URL si es relativa
+                    if url_emblema.startswith('/'):
+                        base = "https://www.hockeypatines.fep.es" if "fep.es" in liga['url'] else "http://www.fcpatinatge.cat"
+                        url_emblema = base + url_emblema
+                
+                # --- EXTRACCIÓN DE TEXTOS ---
                 textos = [c.get_text(strip=True) for c in cols]
                 nombre_raw = ""
                 puntos = 0
                 
+                # Identificar nombre (texto largo no numérico)
                 for t in textos:
-                    if len(t) > 4 and not t.isdigit():
+                    if len(t) > 3 and not t.replace('.','').isdigit():
                         nombre_raw = t
                         break
+                
+                # Identificar puntos (último número de la fila)
                 for t in reversed(textos):
                     if t.isdigit():
                         puntos = int(t)
@@ -78,14 +92,18 @@ def sincronizar_todo():
                 if not nombre_raw: continue
                 nombre = normalizar_nombre(nombre_raw)
                 
+                # Crear o actualizar equipo
                 if nombre not in equipos_map:
                     equipos_map[nombre] = {
                         "n": nombre, "pts": 0, "reg": liga['region'],
-                        "ok": False, "cat_label": liga['cat'], "cats": []
+                        "ok": False, "cat_label": liga['cat'], "cats": [],
+                        "img": url_emblema # Nueva propiedad para el logo
                     }
                 
                 e = equipos_map[nombre]
-                if e['pts'] < puntos: e['pts'] = puntos
+                e['pts'] = puntos
+                # Actualizar logo solo si lo encontramos
+                if url_emblema: e['img'] = url_emblema
                 
                 if liga['es_ok']: 
                     e['ok'] = True
@@ -97,6 +115,7 @@ def sincronizar_todo():
         except Exception as ex:
             print(f"⚠️ Error en {liga['cat']}: {ex}")
 
+    # Procesar canteras y limpiar
     lista_final = []
     for nombre, equipo in equipos_map.items():
         equipo['cats'] = asignar_cantera_completa(nombre, equipo['cats'])
@@ -108,7 +127,8 @@ def sincronizar_todo():
     
     with open('hoquei_data.json', 'w', encoding='utf-8') as f:
         json.dump(datos, f, ensure_ascii=False, indent=4)
-    print(f"\n✅ FINALIZADO. Equipos actualizados: {len(lista_final)}")
+        
+    print(f"\n✅ FINALIZADO. Equipos con emblemas actualizados: {len(lista_final)}")
 
 if __name__ == "__main__":
     sincronizar_todo()
