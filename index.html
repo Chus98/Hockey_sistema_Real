@@ -14,14 +14,15 @@
         .label { font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 1px; }
         .temp-display { font-size: 2.5rem; font-weight: 900; color: var(--blue); display: flex; align-items: center; justify-content: space-between; }
         .btn-main { background: var(--red); color: white; padding: 18px; border: none; border-radius: 18px; width: 100%; font-weight: 800; margin-bottom: 12px; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(218, 41, 28, 0.2); }
+        /* Estils per als ítems de la llista */
         .rank-item { padding: 12px 0; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
-        .row { background: white; padding: 18px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--blue); font-weight: bold; cursor: pointer; }
+        .row { background: white; padding: 18px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--blue); font-weight: bold; }
         footer { background: #001e3c; color: white; padding: 25px; text-align: center; font-size: 0.8rem; font-weight: bold; }
         .ok-badge { display: flex; align-items: center; margin-top: 4px; }
         .ok-text { font-size: 9px; font-weight: 900; color: var(--gold); margin-left: 5px; text-transform: uppercase; }
         .other-text { font-size: 9px; font-weight: 700; color: #64748b; margin-top: 4px; text-transform: uppercase; }
-        /* Estil per al botó de Mapa */
-        .map-btn { background: #e8f5e9; color: var(--green); border: none; padding: 8px 12px; border-radius: 12px; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
+        /* Botó de Mapa Professional */
+        .map-btn { background: #e8f5e9; color: var(--green); border: none; padding: 10px; border-radius: 12px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: 0.3s; margin-left: 10px; }
         .map-btn:active { transform: scale(0.9); background: var(--green); color: white; }
     </style>
 </head>
@@ -38,35 +39,9 @@
 </div>
 
 <script>
-let appData = {
-    equipos: [
-        {n: "HOCKEY CLUB LICEO", pts: 41, reg: "ESP", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "OK Lliga Femenina", "Sènior B", "Base"]},
-        {n: "BARÇA", pts: 38, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "OK Lliga Plata", "Júnior", "Base"]},
-        {n: "IGUALADA RIGAT HC", pts: 38, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
-        {n: "CALAFELL LA MENORQUINA", pts: 33, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
-        {n: "REUS DEPORTIU BRASILIA", pts: 28, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
-        {n: "CE NOIA FREIXENET", pts: 25, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
-        {n: "CP VOLTREGA MOVENTO STERN", pts: 22, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
-        {n: "PONS LLEIDA", pts: 18, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
-        {n: "AITEX PAS ALCOI", pts: 18, reg: "ESP", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
-        {n: "ADISS HOCKEY RIVAS", pts: 16, reg: "ESP", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
-        {n: "CERDANYOLA CLUB D'HOQUEI", pts: 13, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
-        {n: "SHUM FRIT RAVICH", pts: 12, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
-        {n: "INNOAESTHETICS HC SANT JUST", pts: 11, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
-        {n: "CH CALDES RECAM LÀSER", pts: 6, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
-        {n: "CN REUS PLOMS", pts: 0, reg: "CAT", ok: false, cat_label: "2ª i 3ª CATALANA", cats: ["2ª Catalana", "3ª Catalana"]},
-        {n: "CP VILA-SECA", pts: 0, reg: "CAT", ok: false, cat_label: "NACIONAL CATALANA", cats: ["Sènior", "Base"]},
-        {n: "CP CAMBRILS", pts: 0, reg: "CAT", ok: false, cat_label: "SEGONA CATALANA", cats: ["Sènior", "Base"]},
-        {n: "CP RIUDOMS", pts: 0, reg: "CAT", ok: false, cat_label: "CATEGORIA BASE/PROVINC.", cats: ["Base"]},
-        {n: "CE VENDRELL", pts: 0, reg: "CAT", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
-        {n: "CP ALCOBENDAS", pts: 0, reg: "ESP", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
-        {n: "CAA DOMINICOS", pts: 0, reg: "ESP", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
-        {n: "RC JOLASETA", pts: 0, reg: "ESP", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
-        {n: "CP RIVAS H2O", pts: 0, reg: "ESP", ok: false, cat_label: "NACIONAL ESPANYOLA", cats: ["Sènior", "Base"]}
-    ]
-};
+let appData = { equipos: [] };
 
-// FUNCIÓ PER OBRIR GPS
+// FUNCIÓ GPS PROFESSIONAL
 function anarAlMapa(nom) {
     const query = encodeURIComponent(`Pavelló Hoquei Patins ${nom}`);
     window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
@@ -76,19 +51,10 @@ async function loadPoints() {
     try {
         const response = await fetch('hoquei_data.json?v=' + Date.now());
         if (response.ok) {
-            const data = await response.json();
-            if (data.equipos) {
-                data.equipos.forEach(remote => {
-                    const local = appData.equipos.find(e => e.n.toUpperCase() === remote.n.toUpperCase());
-                    if (local) {
-                        local.pts = remote.pts;
-                        if(remote.cats) local.cats = remote.cats;
-                    }
-                });
-                document.getElementById('sync-status').innerText = "SINCRO JSON ACTIVA ✅";
-            }
+            appData = await response.json();
+            document.getElementById('sync-status').innerText = "SINCRO JSON ACTIVA ✅";
         }
-    } catch (e) { document.getElementById('sync-status').innerText = "SINCRO LOCAL ✅"; }
+    } catch (e) { document.getElementById('sync-status').innerText = "ERROR SINCRO ❌"; }
     renderHome();
 }
 
@@ -104,7 +70,7 @@ function renderHome() {
                         <span style="color:var(--red); font-weight:900;">${e.pts} PTS</span>
                     </div>
                     <div class="ok-badge">
-                        <span>🏆</span><span class="ok-text">OK LLIGA MASCULINA</span>
+                        <span>🏆</span><span class="ok-text">OK LLIGA</span>
                     </div>
                 </div>
                 <button class="map-btn" onclick="anarAlMapa('${e.n}')">📍</button>
@@ -117,7 +83,7 @@ function renderHome() {
             <div class="temp-display"><span id="temp-val">--°C</span><span style="color:#10b981; font-size:0.7rem;">● LIVE</span></div>
         </div>
         <div class="widget" style="border-top: 4px solid var(--gold);">
-            <span class="label">🏆 CLASSIFICACIÓ RFEP (OK LLIGA)</span>
+            <span class="label">🏆 TOP CLASSIFICACIÓ</span>
             <div>${rankHtml}</div>
         </div>
         <button class="btn-main" onclick="renderList('CAT')">FEDERACIÓ CATALANA</button>
@@ -132,11 +98,9 @@ function renderList(reg) {
     list.forEach(e => {
         listHtml += `
             <div class="row">
-                <div style="flex:1;" onclick="verCats('${e.n}')">
+                <div style="flex:1; cursor:pointer;" onclick="verCats('${e.n}')">
                     <div style="font-size:0.85rem;">${e.n}</div>
-                    ${e.ok ? 
-                        '<div class="ok-badge"><span>🏆</span><span class="ok-text">OK LLIGA</span></div>' : 
-                        `<div class="other-text">⚙️ ${e.cat_label}</div>`}
+                    <div class="other-text">⚙️ ${e.cat_label}</div>
                 </div>
                 <button class="map-btn" onclick="anarAlMapa('${e.n}')">📍</button>
             </div>`;
