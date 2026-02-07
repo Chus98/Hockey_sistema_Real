@@ -15,6 +15,7 @@
     {"n": "INNOAESTHETICS HC SANT JUST", "pts": 11, "reg": "CAT", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
     {"n": "CH CALDES RECAM LÀSER", "pts": 6, "reg": "CAT", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
     
+    {"n": "REUS OLÍMPIC", "pts": 0, "reg": "CAT", "ok": false, "cat_label": "SEGONA CATALANA", "cats": ["Segona Catalana", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
     {"n": "CP VILA-SECA", "pts": 0, "reg": "CAT", "ok": false, "cat_label": "NACIONAL CATALANA", "cats": ["Nacional Catalana", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
     {"n": "CP CAMBRILS", "pts": 0, "reg": "CAT", "ok": false, "cat_label": "SEGONA CATALANA", "cats": ["Segona Catalana", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
     {"n": "CE VENDRELL", "pts": 0, "reg": "CAT", "ok": false, "cat_label": "OK LLIGA PLATA", "cats": ["OK Lliga Plata", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
@@ -25,5 +26,5 @@
     {"n": "CP ALCOBENDAS", "pts": 0, "reg": "ESP", "ok": false, "cat_label": "OK LLIGA PLATA", "cats": ["OK Lliga Plata", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
     {"n": "RC JOLASETA", "pts": 0, "reg": "ESP", "ok": false, "cat_label": "OK LLIGA PLATA", "cats": ["OK Lliga Plata", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]}
   ],
-  "ultima_actualizacion": "07/02/2026 02:10"
+  "ultima_actualizacion": "07/02/2026 02:15"
 }
