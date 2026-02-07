@@ -14,8 +14,14 @@
         .label { font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 1px; }
         .temp-display { font-size: 2.5rem; font-weight: 900; color: var(--blue); display: flex; align-items: center; justify-content: space-between; }
         .btn-main { background: var(--red); color: white; padding: 18px; border: none; border-radius: 18px; width: 100%; font-weight: 800; margin-bottom: 12px; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(218, 41, 28, 0.2); }
+        
+        /* Estils per a la llista amb emblemes */
         .rank-item { padding: 12px 0; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
         .row { background: white; padding: 18px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--blue); font-weight: bold; }
+        
+        .team-logo { width: 30px; height: 30px; object-fit: contain; border-radius: 4px; background: #f8fafc; padding: 2px; }
+        .team-col { display: flex; align-items: center; gap: 12px; flex: 1; cursor: pointer; }
+        
         footer { background: #001e3c; color: white; padding: 25px; text-align: center; font-size: 0.8rem; font-weight: bold; }
         .ok-text { font-size: 9px; font-weight: 900; color: var(--gold); text-transform: uppercase; }
         .other-text { font-size: 9px; font-weight: 700; color: #64748b; margin-top: 4px; text-transform: uppercase; }
@@ -39,7 +45,7 @@ let appData = { equipos: [] };
 
 function anarAlMapa(nom) {
     const query = encodeURIComponent(`Pavelló Hoquei Patins ${nom}`);
-    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+    window.open(`https://www.google.com/maps/search/${query}`, '_blank');
 }
 
 async function loadPoints() {
@@ -54,20 +60,23 @@ async function loadPoints() {
 }
 
 function renderHome() {
-    // Separem els equips d'elit (OK LLIGA) per al rànquing superior
     const ranking = [...appData.equipos].filter(e => e.ok).sort((a,b) => b.pts - a.pts).slice(0, 6);
     let rankHtml = "";
     ranking.forEach((e, i) => {
+        // Imatge per defecte si no n'hi ha al JSON
+        const imgUrl = e.img || `https://ui-avatars.com/api/?name=${e.n}&background=003366&color=fff`;
+        
         rankHtml += `
             <div class="rank-item">
-                <div style="flex:1; cursor:pointer;" onclick="verCats('${e.n}')">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-weight:800; font-size: 0.9rem;">
-                           <span style="color:var(--gold);">🏆</span> ${i+1}. ${e.n}
-                        </span>
-                        <span style="color:var(--red); font-weight:900;">${e.pts} PTS</span>
+                <div class="team-col" onclick="verCats('${e.n}')">
+                    <img src="${imgUrl}" class="team-logo" onerror="this.src='https://via.placeholder.com/30?text=H'">
+                    <div style="flex:1;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-weight:800; font-size: 0.9rem;">${i+1}. ${e.n}</span>
+                            <span style="color:var(--red); font-weight:900;">${e.pts} PTS</span>
+                        </div>
+                        <div style="margin-top:2px;"><span class="ok-text">🏆 OK LLIGA MASCULINA</span></div>
                     </div>
-                    <div style="margin-top:4px;"><span class="ok-text" style="margin-left:22px;">OK LLIGA MASCULINA</span></div>
                 </div>
                 <button class="map-btn" onclick="anarAlMapa('${e.n}')">📍</button>
             </div>`;
@@ -92,13 +101,16 @@ function renderList(reg) {
     const list = appData.equipos.filter(e => e.reg === reg).sort((a,b) => a.n.localeCompare(b.n));
     let listHtml = "";
     list.forEach(e => {
+        const imgUrl = e.img || `https://ui-avatars.com/api/?name=${e.n}&background=003366&color=fff`;
+        
         listHtml += `
             <div class="row">
-                <div style="flex:1; cursor:pointer;" onclick="verCats('${e.n}')">
-                    <div style="font-size:0.85rem;">
-                        ${e.ok ? '<span style="color:var(--gold);">🏆</span> ' : '• '} ${e.n}
+                <div class="team-col" onclick="verCats('${e.n}')">
+                    <img src="${imgUrl}" class="team-logo" onerror="this.src='https://via.placeholder.com/30?text=H'">
+                    <div style="flex:1;">
+                        <div style="font-size:0.85rem;">${e.n}</div>
+                        <div class="other-text">⚙️ ${e.cat_label}</div>
                     </div>
-                    <div class="other-text" style="margin-left:15px;">⚙️ ${e.cat_label}</div>
                 </div>
                 <button class="map-btn" onclick="anarAlMapa('${e.n}')">📍</button>
             </div>`;
