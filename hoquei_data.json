@@ -1,18 +1,29 @@
 {
   "equipos": [
-    {"n": "HOCKEY CLUB LICEO", "pts": 41},
-    {"n": "BARÇA", "pts": 38},
-    {"n": "IGUALADA RIGAT HC", "pts": 38},
-    {"n": "CALAFELL LA MENORQUINA", "pts": 33},
-    {"n": "REUS DEPORTIU BRASILIA", "pts": 28},
-    {"n": "CE NOIA FREIXENET", "pts": 25},
-    {"n": "CP VOLTREGA MOVENTO STERN", "pts": 22},
-    {"n": "PONS LLEIDA", "pts": 18},
-    {"n": "AITEX PAS ALCOI", "pts": 18},
-    {"n": "ADISS HOCKEY RIVAS", "pts": 16},
-    {"n": "CERDANYOLA CLUB D'HOQUEI", "pts": 13},
-    {"n": "SHUM FRIT RAVICH", "pts": 12},
-    {"n": "INNOAESTHETICS HC SANT JUST", "pts": 11},
-    {"n": "CH CALDES RECAM LÀSER", "pts": 6}
-  ]
+    {"n": "HOCKEY CLUB LICEO", "pts": 41, "reg": "ESP", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "BARÇA", "pts": 38, "reg": "CAT", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "IGUALADA RIGAT HC", "pts": 38, "reg": "CAT", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "CALAFELL LA MENORQUINA", "pts": 33, "reg": "CAT", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "REUS DEPORTIU BRASILIA", "pts": 28, "reg": "CAT", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "CE NOIA FREIXENET", "pts": 25, "reg": "CAT", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "CP VOLTREGA MOVENTO STERN", "pts": 22, "reg": "CAT", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "PONS LLEIDA", "pts": 18, "reg": "CAT", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "AITEX PAS ALCOI", "pts": 18, "reg": "ESP", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "ADISS HOCKEY RIVAS", "pts": 16, "reg": "ESP", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "CERDANYOLA CLUB D'HOQUEI", "pts": 13, "reg": "CAT", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "SHUM FRIT RAVICH", "pts": 12, "reg": "CAT", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "INNOAESTHETICS HC SANT JUST", "pts": 11, "reg": "CAT", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "CH CALDES RECAM LÀSER", "pts": 6, "reg": "CAT", "ok": true, "cat_label": "OK LLIGA", "cats": ["OK LLIGA", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    
+    {"n": "CP VILA-SECA", "pts": 0, "reg": "CAT", "ok": false, "cat_label": "NACIONAL CATALANA", "cats": ["Nacional Catalana", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "CP CAMBRILS", "pts": 0, "reg": "CAT", "ok": false, "cat_label": "SEGONA CATALANA", "cats": ["Segona Catalana", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "CE VENDRELL", "pts": 0, "reg": "CAT", "ok": false, "cat_label": "OK LLIGA PLATA", "cats": ["OK Lliga Plata", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "CP RIUDOMS", "pts": 0, "reg": "CAT", "ok": false, "cat_label": "CATEGORIA PROVINCIAL", "cats": ["Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    
+    {"n": "CN REUS PLOMS", "pts": 0, "reg": "CAT", "ok": false, "cat_label": "2ª i 3ª CATALANA", "cats": ["Segona Catalana", "Tercera Catalana"]},
+
+    {"n": "CP ALCOBENDAS", "pts": 0, "reg": "ESP", "ok": false, "cat_label": "OK LLIGA PLATA", "cats": ["OK Lliga Plata", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]},
+    {"n": "RC JOLASETA", "pts": 0, "reg": "ESP", "ok": false, "cat_label": "OK LLIGA PLATA", "cats": ["OK Lliga Plata", "Júnior", "Juvenil", "Infantil", "Aleví", "Benjamí", "Prebenjamí", "Escola"]}
+  ],
+  "ultima_actualizacion": "07/02/2026 02:10"
 }
