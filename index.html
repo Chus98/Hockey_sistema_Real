@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JLS Hoquei - Oficial</title>
+    <title>JLS Hoquei - Sincronització Real</title>
     <style>
         :root { --blue: #003366; --red: #da291c; --gold: #d4af37; --bg: #f1f5f9; }
         body { font-family: -apple-system, system-ui, sans-serif; margin: 0; background: #0f172a; color: #1e293b; }
@@ -25,40 +25,52 @@
 <div class="app">
     <header>
         <h1 style="margin:0; font-size: 2.2rem; letter-spacing: -1px;">JLS HOQUEI</h1>
-        <div style="font-size:0.7rem; margin-top:5px; font-weight: bold;">INFO REAL ACTUALITZADA ✅</div>
+        <div id="sync-status" style="font-size:0.7rem; margin-top:5px; font-weight: bold; color: #10b981;">SINCRO REIAL ACTIVA ✅</div>
     </header>
     
-    <div id="main-content" class="p-20">
-        </div>
+    <div id="main-content" class="p-20"></div>
 
-    <footer>DESARROLLADO POR JESÚS LORENZO SÁNCHEZ</footer>
+    <footer>DESENVOLUPAT PER JESÚS LORENZO SÁNCHEZ</footer>
 </div>
 
 <script>
-// DATOS 100% REALES (FEP OFICIAL 2025/26)
-const appData = {
+// DADES DE BASE (COPIA DE SEGURETAT)
+let appData = {
     reglamento: "https://fep.es/federacion/reglamentos",
     equipos: [
-        {n: "HOCKEY CLUB LICEO", pts: 41, reg: "ESP", ok: true, cats: ["OK Lliga", "Femení", "Sènior B", "Base Galega"]},
-        {n: "BARÇA", pts: 38, reg: "CAT", ok: true, cats: ["OK Lliga", "OK Lliga Plata", "Sènior B", "Base"]},
-        {n: "IGUALADA RIGAT HC", pts: 38, reg: "CAT", ok: true, cats: ["OK Lliga", "Base", "Veterans"]},
-        {n: "CALAFELL LA MENORQUINA", pts: 33, reg: "CAT", ok: true, cats: ["OK Lliga", "Sènior B", "Base"]},
-        {n: "REUS DEPORTIU BRASILIA", pts: 28, reg: "CAT", ok: true, cats: ["OK Lliga", "Femení", "Base"]},
-        {n: "CE NOIA FREIXENET", pts: 25, reg: "CAT", ok: true, cats: ["OK Lliga", "Sènior B", "Base"]},
-        {n: "CP VOLTREGA MOVENTO STERN", pts: 22, reg: "CAT", ok: true, cats: ["OK Lliga", "OK Lliga Femenina"]},
-        {n: "PONS LLEIDA", pts: 18, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
-        {n: "AITEX PAS ALCOI", pts: 18, reg: "ESP", ok: true, cats: ["OK Lliga", "Base"]},
-        {n: "ADISS HOCKEY RIVAS", pts: 16, reg: "ESP", ok: true, cats: ["OK Lliga", "Base"]},
-        {n: "CERDANYOLA CH", pts: 13, reg: "CAT", ok: true, cats: ["OK Lliga", "Femení"]},
-        {n: "SHUM FRIT RAVICH", pts: 12, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
-        {n: "HC SANT JUST", pts: 11, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
-        {n: "CH CALDES RECAM LÀSER", pts: 6, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]}
+        {n: "HOCKEY CLUB LICEO", pts: 41, reg: "ESP", ok: true, cats: ["OK Lliga", "OK Lliga Femenina", "Sènior B"]},
+        {n: "BARÇA", pts: 38, reg: "CAT", ok: true, cats: ["OK Lliga", "Sènior B", "Base"]},
+        {n: "IGUALADA RIGAT HC", pts: 38, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
+        {n: "CALAFELL LA MENORQUINA", pts: 33, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
+        {n: "REUS DEPORTIU BRASILIA", pts: 28, reg: "CAT", ok: true, cats: ["OK Lliga", "Femení"]},
+        {n: "CE NOIA FREIXENET", pts: 25, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]}
     ]
 };
 
+// FUNCIÓ PER CARREGAR EL TEU JSON
+async function loadPoints() {
+    try {
+        const response = await fetch('hoquei_data.json?v=' + Date.now());
+        if (!response.ok) throw new Error("No s'ha trobat el JSON");
+        const data = await response.json();
+        
+        if (data && data.equipos) {
+            // Actualitzem els punts del JSON a la nostra app
+            data.equipos.forEach(remote => {
+                const local = appData.equipos.find(e => e.n.toUpperCase() === remote.n.toUpperCase());
+                if (local) local.pts = remote.pts;
+            });
+            document.getElementById('sync-status').innerText = "DADES ACTUALITZADES (JSON) ⚡";
+        }
+    } catch (error) {
+        console.log("Usant dades de reserva:", error.message);
+        document.getElementById('sync-status').innerText = "SINCRO LOCAL (OFFLINE) 🛡️";
+    }
+    renderHome();
+}
+
 function renderHome() {
     const ranking = [...appData.equipos].sort((a,b) => b.pts - a.pts).slice(0, 6);
-    
     let rankHtml = "";
     ranking.forEach((e, i) => {
         rankHtml += `
@@ -75,18 +87,16 @@ function renderHome() {
 
     document.getElementById('main-content').innerHTML = `
         <div class="widget">
-            <span class="label">🌡️ TIEMPO REAL (GPS)</span>
+            <span class="label">🌡️ TEMPS REAL (GPS)</span>
             <div class="temp-display">
-                <span id="temp-val">...</span>
+                <span id="temp-val">12°C</span>
                 <span style="color:#10b981; font-size:0.7rem;">● LIVE</span>
             </div>
         </div>
-        
         <div class="widget" style="border-top: 4px solid var(--gold);">
-            <span class="label">🏆 CLASIFICACIÓN REAL FEP</span>
+            <span class="label">🏆 CLASSIFICACIÓ REIAL FEP</span>
             <div>${rankHtml}</div>
         </div>
-
         <button class="btn-main" onclick="renderList('CAT')">CATALUNYA</button>
         <button class="btn-main" style="background:var(--blue)" onclick="renderList('ESP')">ESPANYA</button>
         <button class="btn-main" style="background:#f59e0b; color:black; border:2px solid black;" onclick="window.open('${appData.reglamento}')">📜 REGLAMENTS 2025/2026</button>
@@ -101,7 +111,7 @@ function renderList(reg) {
         listHtml += `
             <div class="row" onclick="verCats('${e.n}')">
                 <div>
-                    <div>${e.n}</div>
+                    <div style="font-size:0.9rem;">${e.n}</div>
                     <div style="font-size:0.6rem; color:var(--gold); font-weight:900;">🏆 OK LLIGA</div>
                 </div>
                 <span>❯</span>
@@ -109,9 +119,9 @@ function renderList(reg) {
     });
 
     document.getElementById('main-content').innerHTML = `
-        <h3 class="label">EQUIPS DE ${reg === 'CAT' ? 'CATALUNYA' : 'ESPANYA'}</h3>
+        <h3 class="label">EQUIPS DE ${reg}</h3>
         <div style="max-height:450px; overflow-y:auto;">${listHtml}</div>
-        <button class="btn-main" style="background:#64748b; margin-top:20px;" onclick="renderHome()">← VOLVER</button>
+        <button class="btn-main" style="background:#64748b; margin-top:20px;" onclick="renderHome()">← TORNAR</button>
     `;
 }
 
@@ -121,19 +131,19 @@ function verCats(name) {
 }
 
 async function updateWeather() {
-    try {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(async (p) => {
-                const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=" + p.coords.latitude + "&longitude=" + p.coords.longitude + "&current_weather=true");
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (p) => {
+            try {
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}&current_weather=true`);
                 const data = await res.json();
                 document.getElementById('temp-val').innerText = Math.round(data.current_weather.temperature) + "°C";
-            }, () => { document.getElementById('temp-val').innerText = "15°C"; });
-        }
-    } catch(e) { document.getElementById('temp-val').innerText = "15°C"; }
+            } catch(e) {}
+        });
+    }
 }
 
-// Iniciar aplicación
-renderHome();
+// Iniciar carregant el JSON
+loadPoints();
 </script>
 </body>
 </html>
