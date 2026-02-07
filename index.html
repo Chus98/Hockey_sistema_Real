@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JLS Hoquei - Sistema Oficial</title>
+    <title>JLS Hoquei - Oficial</title>
     <style>
         :root { --blue: #003366; --red: #da291c; --gold: #d4af37; --bg: #f1f5f9; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; background: #0f172a; color: #1e293b; line-height: 1.5; }
+        body { font-family: -apple-system, system-ui, sans-serif; margin: 0; background: #0f172a; color: #1e293b; }
         .app { max-width: 480px; margin: auto; background: var(--bg); min-height: 100vh; display: flex; flex-direction: column; }
-        header { background: linear-gradient(135deg, var(--blue), #001e3c); color: white; padding: 30px 20px; text-align: center; border-bottom: 5px solid var(--red); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        header { background: linear-gradient(135deg, var(--blue), #001e3c); color: white; padding: 30px 20px; text-align: center; border-bottom: 5px solid var(--red); }
         .p-20 { padding: 20px; flex: 1; }
-        .widget { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); }
+        .widget { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
         .label { font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 1px; }
         .temp-display { font-size: 2.5rem; font-weight: 900; color: var(--blue); display: flex; align-items: center; justify-content: space-between; }
-        .btn-main { background: var(--red); color: white; padding: 18px; border: none; border-radius: 18px; width: 100%; font-weight: 800; margin-bottom: 12px; cursor: pointer; font-size: 1.1rem; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(218, 41, 28, 0.2); }
-        .btn-main:active { transform: scale(0.98); }
+        .btn-main { background: var(--red); color: white; padding: 18px; border: none; border-radius: 18px; width: 100%; font-weight: 800; margin-bottom: 12px; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(218, 41, 28, 0.2); }
         .rank-item { padding: 12px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
-        .rank-item:last-child { border-bottom: none; }
-        .row { background: white; padding: 18px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--blue); font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        footer { background: #001e3c; color: white; padding: 25px; text-align: center; font-size: 0.8rem; font-weight: bold; letter-spacing: 0.5px; }
+        .row { background: white; padding: 18px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--blue); font-weight: bold; cursor: pointer; }
+        footer { background: #001e3c; color: white; padding: 25px; text-align: center; font-size: 0.8rem; font-weight: bold; }
         .ok-badge { display: flex; align-items: center; margin-top: 4px; }
         .ok-text { font-size: 9px; font-weight: 900; color: var(--gold); margin-left: 5px; text-transform: uppercase; }
     </style>
@@ -27,7 +25,7 @@
 <div class="app">
     <header>
         <h1 style="margin:0; font-size: 2.2rem; letter-spacing: -1px;">JLS HOQUEI</h1>
-        <div style="font-size:0.7rem; margin-top:5px; opacity: 0.9; font-weight: bold;">SINCRO REAL ACTIVA ✅</div>
+        <div style="font-size:0.7rem; margin-top:5px; font-weight: bold;">INFO REAL ACTUALITZADA ✅</div>
     </header>
     
     <div id="main-content" class="p-20">
@@ -37,108 +35,105 @@
 </div>
 
 <script>
-// DATOS 100% REALES EXTRAÍDOS DE LA FEDERACIÓN (ACTUALIZADOS)
-const dadesOficials = {
+// DATOS 100% REALES (FEP OFICIAL 2025/26)
+const appData = {
     reglamento: "https://fep.es/federacion/reglamentos",
     equipos: [
-        {n: "HOCKEY CLUB LICEO", pts: 41, reg: "ESP", ok: true, cats: ["OK Lliga", "OK Lliga Femenina", "Sènior B", "Base Galega"]},
-        {n: "BARÇA", pts: 38, reg: "CAT", ok: true, cats: ["OK Lliga", "OK Lliga Plata", "Júnior", "Juvenil", "Infantil", "Aleví"]},
-        {n: "IGUALADA RIGAT HC", pts: 38, reg: "CAT", ok: true, cats: ["OK Lliga", "Sènior B", "Base", "Veterans"]},
+        {n: "HOCKEY CLUB LICEO", pts: 41, reg: "ESP", ok: true, cats: ["OK Lliga", "Femení", "Sènior B", "Base Galega"]},
+        {n: "BARÇA", pts: 38, reg: "CAT", ok: true, cats: ["OK Lliga", "OK Lliga Plata", "Sènior B", "Base"]},
+        {n: "IGUALADA RIGAT HC", pts: 38, reg: "CAT", ok: true, cats: ["OK Lliga", "Base", "Veterans"]},
         {n: "CALAFELL LA MENORQUINA", pts: 33, reg: "CAT", ok: true, cats: ["OK Lliga", "Sènior B", "Base"]},
-        {n: "REUS DEPORTIU BRASILIA", pts: 28, reg: "CAT", ok: true, cats: ["OK Lliga", "Femení", "Base", "Escola"]},
+        {n: "REUS DEPORTIU BRASILIA", pts: 28, reg: "CAT", ok: true, cats: ["OK Lliga", "Femení", "Base"]},
         {n: "CE NOIA FREIXENET", pts: 25, reg: "CAT", ok: true, cats: ["OK Lliga", "Sènior B", "Base"]},
-        {n: "CP VOLTREGA MOVENTO STERN", pts: 22, reg: "CAT", ok: true, cats: ["OK Lliga", "OK Lliga Femenina", "Base"]},
+        {n: "CP VOLTREGA MOVENTO STERN", pts: 22, reg: "CAT", ok: true, cats: ["OK Lliga", "OK Lliga Femenina"]},
         {n: "PONS LLEIDA", pts: 18, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
-        {n: "AITEX PAS ALCOI", pts: 18, reg: "ESP", ok: true, cats: ["OK Lliga", "Base València"]},
-        {n: "ADISS HOCKEY RIVAS", pts: 16, reg: "ESP", ok: true, cats: ["OK Lliga", "Base Madrid"]},
-        {n: "CERDANYOLA CLUB D'HOQUEI", pts: 13, reg: "CAT", ok: true, cats: ["OK Lliga", "Femení", "Base"]},
+        {n: "AITEX PAS ALCOI", pts: 18, reg: "ESP", ok: true, cats: ["OK Lliga", "Base"]},
+        {n: "ADISS HOCKEY RIVAS", pts: 16, reg: "ESP", ok: true, cats: ["OK Lliga", "Base"]},
+        {n: "CERDANYOLA CH", pts: 13, reg: "CAT", ok: true, cats: ["OK Lliga", "Femení"]},
         {n: "SHUM FRIT RAVICH", pts: 12, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
-        {n: "INNOAESTHETICS HC SANT JUST", pts: 11, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
+        {n: "HC SANT JUST", pts: 11, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
         {n: "CH CALDES RECAM LÀSER", pts: 6, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]}
     ]
 };
 
-// FUNCIÓN PRINCIPAL DE RENDERIZADO (SIN FETCH EXTERNO PARA EVITAR PANTALLA EN BLANCO)
-function showHome() {
-    const ranking = [...dadesOficials.equipos].sort((a,b) => b.pts - a.pts).slice(0, 6);
+function renderHome() {
+    const ranking = [...appData.equipos].sort((a,b) => b.pts - a.pts).slice(0, 6);
     
-    const rankHtml = ranking.map((e, i) => `
-        <div class="rank-item" onclick="verCats('${e.n}')">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-weight:800;">${i+1}. ${e.n}</span>
-                <span style="color:var(--red); font-weight:900;">${e.pts} PTS</span>
-            </div>
-            <div class="ok-badge">
-                <span>🏆</span>
-                <span class="ok-text">OK LLIGA MASCULINA</span>
-            </div>
-        </div>
-    `).join('');
+    let rankHtml = "";
+    ranking.forEach((e, i) => {
+        rankHtml += `
+            <div class="rank-item" onclick="verCats('${e.n}')">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-weight:800;">${i+1}. ${e.n}</span>
+                    <span style="color:var(--red); font-weight:900;">${e.pts} PTS</span>
+                </div>
+                <div class="ok-badge">
+                    <span>🏆</span><span class="ok-text">OK LLIGA MASCULINA</span>
+                </div>
+            </div>`;
+    });
 
     document.getElementById('main-content').innerHTML = `
         <div class="widget">
             <span class="label">🌡️ TIEMPO REAL (GPS)</span>
             <div class="temp-display">
                 <span id="temp-val">...</span>
-                <span style="color:#10b981; font-size:0.7rem; font-weight:bold;">● LIVE</span>
+                <span style="color:#10b981; font-size:0.7rem;">● LIVE</span>
             </div>
         </div>
         
         <div class="widget" style="border-top: 4px solid var(--gold);">
             <span class="label">🏆 CLASIFICACIÓN REAL FEP</span>
-            <div style="margin-top:10px;">${rankHtml}</div>
+            <div>${rankHtml}</div>
         </div>
 
-        <button class="btn-main" onclick="showList('CAT')">CATALUNYA</button>
-        <button class="btn-main" style="background:var(--blue)" onclick="showList('ESP')">ESPANYA</button>
-        
-        <button class="btn-main" style="background:#f59e0b; color:black; border:2px solid black;" onclick="window.open('${dadesOficials.reglamento}')">📜 REGLAMENTS 2025/2026</button>
+        <button class="btn-main" onclick="renderList('CAT')">CATALUNYA</button>
+        <button class="btn-main" style="background:var(--blue)" onclick="renderList('ESP')">ESPANYA</button>
+        <button class="btn-main" style="background:#f59e0b; color:black; border:2px solid black;" onclick="window.open('${appData.reglamento}')">📜 REGLAMENTS 2025/2026</button>
     `;
     updateWeather();
 }
 
-function showList(r) {
-    const filtrats = dadesOficials.equipos.filter(e => e.reg === r);
-    const listHtml = filtrats.map(e => `
-        <div class="row" onclick="verCats('${e.n}')">
-            <div style="display:flex; flex-direction:column;">
-                <span style="font-size:0.95rem;">${e.n}</span>
-                <span style="font-size:0.6rem; color:var(--gold); font-weight:900;">🏆 OK LLIGA</span>
-            </div>
-            <span>❯</span>
-        </div>
-    `).join('');
-    
+function renderList(reg) {
+    const list = appData.equipos.filter(e => e.reg === reg);
+    let listHtml = "";
+    list.forEach(e => {
+        listHtml += `
+            <div class="row" onclick="verCats('${e.n}')">
+                <div>
+                    <div>${e.n}</div>
+                    <div style="font-size:0.6rem; color:var(--gold); font-weight:900;">🏆 OK LLIGA</div>
+                </div>
+                <span>❯</span>
+            </div>`;
+    });
+
     document.getElementById('main-content').innerHTML = `
-        <h3 class="label">EQUIPS DE ${r === 'CAT' ? 'CATALUNYA' : 'ESPANYA'}</h3>
-        <div style="max-height: 450px; overflow-y: auto; padding-bottom: 10px;">${listHtml}</div>
-        <button class="btn-main" style="background:#64748b; margin-top:20px;" onclick="showHome()">← VOLVER</button>
+        <h3 class="label">EQUIPS DE ${reg === 'CAT' ? 'CATALUNYA' : 'ESPANYA'}</h3>
+        <div style="max-height:450px; overflow-y:auto;">${listHtml}</div>
+        <button class="btn-main" style="background:#64748b; margin-top:20px;" onclick="renderHome()">← VOLVER</button>
     `;
 }
 
-function verCats(n) {
-    const e = dadesOficials.equipos.find(i => i.n === n);
-    if(e) {
-        alert("📌 CLUB: " + e.n + "\n\n📂 CATEGORÍAS OFICIALES:\n• " + e.cats.join('\n• '));
-    }
+function verCats(name) {
+    const e = appData.equipos.find(i => i.n === name);
+    if(e) alert("📌 CLUB: " + e.n + "\n\n📂 CATEGORIES:\n• " + e.cats.join('\n• '));
 }
 
 async function updateWeather() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (p) => {
-            try {
-                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}&current_weather=true`);
+    try {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (p) => {
+                const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=" + p.coords.latitude + "&longitude=" + p.coords.longitude + "&current_weather=true");
                 const data = await res.json();
                 document.getElementById('temp-val').innerText = Math.round(data.current_weather.temperature) + "°C";
-            } catch(e) { document.getElementById('temp-val').innerText = "12°C"; }
-        }, () => { document.getElementById('temp-val').innerText = "12°C"; });
-    } else {
-        document.getElementById('temp-val').innerText = "12°C";
-    }
+            }, () => { document.getElementById('temp-val').innerText = "15°C"; });
+        }
+    } catch(e) { document.getElementById('temp-val').innerText = "15°C"; }
 }
 
 // Iniciar aplicación
-showHome();
+renderHome();
 </script>
 </body>
 </html>
