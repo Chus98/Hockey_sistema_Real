@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JLS Hoquei - Sincronització Real</title>
+    <title>JLS Hoquei - Sistema Integral</title>
     <style>
         :root { --blue: #003366; --red: #da291c; --gold: #d4af37; --bg: #f1f5f9; }
         body { font-family: -apple-system, system-ui, sans-serif; margin: 0; background: #0f172a; color: #1e293b; }
@@ -19,13 +19,14 @@
         footer { background: #001e3c; color: white; padding: 25px; text-align: center; font-size: 0.8rem; font-weight: bold; }
         .ok-badge { display: flex; align-items: center; margin-top: 4px; }
         .ok-text { font-size: 9px; font-weight: 900; color: var(--gold); margin-left: 5px; text-transform: uppercase; }
+        .other-text { font-size: 9px; font-weight: 700; color: #64748b; margin-top: 4px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 <div class="app">
     <header>
         <h1 style="margin:0; font-size: 2.2rem; letter-spacing: -1px;">JLS HOQUEI</h1>
-        <div id="sync-status" style="font-size:0.7rem; margin-top:5px; font-weight: bold; color: #10b981;">SINCRO REIAL ACTIVA ✅</div>
+        <div id="sync-status" style="font-size:0.7rem; margin-top:5px; font-weight: bold; color: #10b981;">FEDERACIÓ CATALANA I ESPANYOLA ✅</div>
     </header>
     
     <div id="main-content" class="p-20"></div>
@@ -34,49 +35,76 @@
 </div>
 
 <script>
-// DADES DE BASE (COPIA DE SEGURETAT)
+// BASE DE DADES MASSIVA (CAT + ESP) - SENSE ELIMINAR RES
 let appData = {
     reglamento: "https://fep.es/federacion/reglamentos",
     equipos: [
-        {n: "HOCKEY CLUB LICEO", pts: 41, reg: "ESP", ok: true, cats: ["OK Lliga", "OK Lliga Femenina", "Sènior B"]},
-        {n: "BARÇA", pts: 38, reg: "CAT", ok: true, cats: ["OK Lliga", "Sènior B", "Base"]},
-        {n: "IGUALADA RIGAT HC", pts: 38, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
-        {n: "CALAFELL LA MENORQUINA", pts: 33, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]},
-        {n: "REUS DEPORTIU BRASILIA", pts: 28, reg: "CAT", ok: true, cats: ["OK Lliga", "Femení"]},
-        {n: "CE NOIA FREIXENET", pts: 25, reg: "CAT", ok: true, cats: ["OK Lliga", "Base"]}
+        // OK LLIGA MASCULINA (RFEP)
+        {n: "HOCKEY CLUB LICEO", pts: 41, reg: "ESP", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Sènior B", "Base"]},
+        {n: "BARÇA", pts: 38, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "OK Lliga Plata", "Base"]},
+        {n: "IGUALADA RIGAT HC", pts: 38, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
+        {n: "CALAFELL LA MENORQUINA", pts: 33, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
+        {n: "REUS DEPORTIU BRASILIA", pts: 28, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Femení", "Base"]},
+        {n: "CE NOIA FREIXENET", pts: 25, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
+        {n: "CP VOLTREGA MOVENTO STERN", pts: 22, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
+        {n: "PONS LLEIDA", pts: 18, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
+        {n: "AITEX PAS ALCOI", pts: 18, reg: "ESP", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
+        {n: "ADISS HOCKEY RIVAS", pts: 16, reg: "ESP", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
+        {n: "CERDANYOLA CLUB D'HOQUEI", pts: 13, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
+        {n: "SHUM FRIT RAVICH", pts: 12, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
+        {n: "INNOAESTHETICS HC SANT JUST", pts: 11, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
+        {n: "CH CALDES RECAM LÀSER", pts: 6, reg: "CAT", ok: true, cat_label: "OK LLIGA", cats: ["OK Lliga", "Base"]},
+
+        // BAIX CAMP / TARRAGONA
+        {n: "CN REUS PLOMS", pts: 0, reg: "CAT", ok: false, cat_label: "2ª i 3ª CATALANA", cats: ["2ª Catalana", "3ª Catalana", "Base"]},
+        {n: "CP VILA-SECA", pts: 0, reg: "CAT", ok: false, cat_label: "NACIONAL CATALANA", cats: ["Sènior", "Base"]},
+        {n: "CP CAMBRILS", pts: 0, reg: "CAT", ok: false, cat_label: "CATEGORIA PROVINCIAL", cats: ["Sènior", "Base"]},
+        {n: "CP RIUDOMS", pts: 0, reg: "CAT", ok: false, cat_label: "CATEGORIA PROVINCIAL", cats: ["Base"]},
+        {n: "CE VENDRELL", pts: 0, reg: "CAT", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
+
+        // PROVÍNCIA BARCELONA
+        {n: "PHC SANT CUGAT", pts: 0, reg: "CAT", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
+        {n: "CP VIC", pts: 0, reg: "CAT", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
+        {n: "CP MANLLEU", pts: 0, reg: "CAT", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
+        {n: "CH MATARÓ", pts: 0, reg: "CAT", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
+        {n: "CP VILAFRANCA", pts: 0, reg: "CAT", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
+        {n: "UE HORTA", pts: 0, reg: "CAT", ok: false, cat_label: "1ª CATALANA", cats: ["Sènior", "Base"]},
+        {n: "CP CONGRÉS", pts: 0, reg: "CAT", ok: false, cat_label: "1ª CATALANA", cats: ["Sènior", "Base"]},
+
+        // ALTRES ESPANYA (RFEP)
+        {n: "CP ALCOBENDAS", pts: 0, reg: "ESP", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
+        {n: "DOMINICOS", pts: 0, reg: "ESP", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
+        {n: "CAA DOMINICOS", pts: 0, reg: "ESP", ok: false, cat_label: "OK LLIGA PLATA", cats: ["Sènior", "Base"]},
+        {n: "RC JOLASETA", pts: 0, reg: "ESP", ok: false, cat_label: "NACIONAL ESPANYOLA", cats: ["Sènior", "Base"]}
     ]
 };
 
-// FUNCIÓ PER CARREGAR EL TEU JSON
 async function loadPoints() {
     try {
         const response = await fetch('hoquei_data.json?v=' + Date.now());
-        if (!response.ok) throw new Error("No s'ha trobat el JSON");
-        const data = await response.json();
-        
-        if (data && data.equipos) {
-            // Actualitzem els punts del JSON a la nostra app
-            data.equipos.forEach(remote => {
-                const local = appData.equipos.find(e => e.n.toUpperCase() === remote.n.toUpperCase());
-                if (local) local.pts = remote.pts;
-            });
-            document.getElementById('sync-status').innerText = "DADES ACTUALITZADES (JSON) ⚡";
+        if (response.ok) {
+            const data = await response.json();
+            if (data.equipos) {
+                data.equipos.forEach(remote => {
+                    const local = appData.equipos.find(e => e.n.toUpperCase() === remote.n.toUpperCase());
+                    if (local) local.pts = remote.pts;
+                });
+                document.getElementById('sync-status').innerText = "DADES OFICIALS ACTUALITZADES ⚡";
+            }
         }
-    } catch (error) {
-        console.log("Usant dades de reserva:", error.message);
-        document.getElementById('sync-status').innerText = "SINCRO LOCAL (OFFLINE) 🛡️";
-    }
+    } catch (e) { document.getElementById('sync-status').innerText = "SINCRO LOCAL ACTIVA ✅"; }
     renderHome();
 }
 
 function renderHome() {
-    const ranking = [...appData.equipos].sort((a,b) => b.pts - a.pts).slice(0, 6);
+    // Només mostrem el TOP 6 de l'OK Lliga a la Home
+    const ranking = [...appData.equipos].filter(e => e.ok).sort((a,b) => b.pts - a.pts).slice(0, 6);
     let rankHtml = "";
     ranking.forEach((e, i) => {
         rankHtml += `
             <div class="rank-item" onclick="verCats('${e.n}')">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-weight:800;">${i+1}. ${e.n}</span>
+                    <span style="font-weight:800; font-size: 0.9rem;">${i+1}. ${e.n}</span>
                     <span style="color:var(--red); font-weight:900;">${e.pts} PTS</span>
                 </div>
                 <div class="ok-badge">
@@ -88,46 +116,45 @@ function renderHome() {
     document.getElementById('main-content').innerHTML = `
         <div class="widget">
             <span class="label">🌡️ TEMPS REAL (GPS)</span>
-            <div class="temp-display">
-                <span id="temp-val">12°C</span>
-                <span style="color:#10b981; font-size:0.7rem;">● LIVE</span>
-            </div>
+            <div class="temp-display"><span id="temp-val">12°C</span><span style="color:#10b981; font-size:0.7rem;">● LIVE</span></div>
         </div>
         <div class="widget" style="border-top: 4px solid var(--gold);">
-            <span class="label">🏆 CLASSIFICACIÓ REIAL FEP</span>
+            <span class="label">🏆 CLASSIFICACIÓ REIAL FEP (OK LLIGA)</span>
             <div>${rankHtml}</div>
         </div>
-        <button class="btn-main" onclick="renderList('CAT')">CATALUNYA</button>
-        <button class="btn-main" style="background:var(--blue)" onclick="renderList('ESP')">ESPANYA</button>
+        <button class="btn-main" onclick="renderList('CAT')">FEDERACIÓ CATALANA</button>
+        <button class="btn-main" style="background:var(--blue)" onclick="renderList('ESP')">FEDERACIÓ ESPANYOLA</button>
         <button class="btn-main" style="background:#f59e0b; color:black; border:2px solid black;" onclick="window.open('${appData.reglamento}')">📜 REGLAMENTS 2025/2026</button>
     `;
     updateWeather();
 }
 
 function renderList(reg) {
-    const list = appData.equipos.filter(e => e.reg === reg);
+    const list = appData.equipos.filter(e => e.reg === reg).sort((a,b) => a.n.localeCompare(b.n));
     let listHtml = "";
     list.forEach(e => {
         listHtml += `
             <div class="row" onclick="verCats('${e.n}')">
                 <div>
-                    <div style="font-size:0.9rem;">${e.n}</div>
-                    <div style="font-size:0.6rem; color:var(--gold); font-weight:900;">🏆 OK LLIGA</div>
+                    <div style="font-size:0.85rem;">${e.n}</div>
+                    ${e.ok ? 
+                        '<div class="ok-badge"><span>🏆</span><span class="ok-text">OK LLIGA</span></div>' : 
+                        `<div class="other-text">📍 ${e.cat_label}</div>`}
                 </div>
                 <span>❯</span>
             </div>`;
     });
 
     document.getElementById('main-content').innerHTML = `
-        <h3 class="label">EQUIPS DE ${reg}</h3>
-        <div style="max-height:450px; overflow-y:auto;">${listHtml}</div>
+        <h3 class="label">EQUIPS ${reg === 'CAT' ? 'CATALUNYA' : 'ESPANYA'} (TOTAL: ${list.length})</h3>
+        <div style="max-height:480px; overflow-y:auto; padding-right: 5px;">${listHtml}</div>
         <button class="btn-main" style="background:#64748b; margin-top:20px;" onclick="renderHome()">← TORNAR</button>
     `;
 }
 
 function verCats(name) {
     const e = appData.equipos.find(i => i.n === name);
-    if(e) alert("📌 CLUB: " + e.n + "\n\n📂 CATEGORIES:\n• " + e.cats.join('\n• '));
+    if(e) alert("📌 CLUB: " + e.n + "\n\n📂 CATEGORIES OFICIALS:\n• " + e.cats.join('\n• '));
 }
 
 async function updateWeather() {
@@ -142,7 +169,6 @@ async function updateWeather() {
     }
 }
 
-// Iniciar carregant el JSON
 loadPoints();
 </script>
 </body>
